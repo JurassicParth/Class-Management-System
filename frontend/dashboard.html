@@ -1,1 +1,114 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dashboard | CMS</title>
 
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+    <div class="dashboard-container">
+      <!-- Sidebar -->
+
+      <aside class="sidebar">
+        <h2>CMS</h2>
+
+        <ul>
+          <li>
+            <a href="dashboard.html"><i class="fas fa-house"></i> Dashboard</a>
+          </li>
+
+          <li>
+            <a href="students.html"
+              ><i class="fas fa-user-graduate"></i> Students</a
+            >
+          </li>
+
+          <li>
+            <a href="teachers.html"
+              ><i class="fas fa-chalkboard-teacher"></i> Teachers</a
+            >
+          </li>
+
+          <li>
+            <a href="attendance.html"
+              ><i class="fas fa-calendar-check"></i> Attendance</a>
+          </li>
+
+          <li>
+            <a href="marks.html"><i class="fas fa-file-lines"></i> Marks</a>
+          </li>
+
+          <li>
+            <a href="courses.html"><i class="fas fa-book"></i> Courses</a>
+          </li>
+
+          <li>
+            <a href="announcements.html"
+              ><i class="fas fa-bullhorn"></i> Announcements</a
+            >
+          </li>
+
+          <li>
+            <a href="login.html"
+              ><i class="fas fa-right-from-bracket"></i> Logout</a
+            >
+          </li>
+        </ul>
+      </aside>
+
+      <!-- Main Content -->
+
+      <main class="main-content">
+        <header class="dashboard-header">
+          <h1>Dashboard</h1>
+          <p>Welcome Administrator</p>
+        </header>
+
+        <!-- Statistics -->
+
+        <section class="stats">
+          <div class="card">
+            <h3>Total Students</h3>
+            <p>250</p>
+          </div>
+
+          <div class="card">
+            <h3>Total Teachers</h3>
+            <p>20</p>
+          </div>
+
+          <div class="card">
+            <h3>Attendance</h3>
+            <p>92%</p>
+          </div>
+
+          <div class="card">
+            <h3>Tests Conducted</h3>
+            <p>15</p>
+          </div>
+        </section>
+
+        <!-- Announcements -->
+
+        <section class="announcement-box">
+          <h2>Recent Announcements</h2>
+
+          <ul>
+            <li>Semester Examination begins on 10 July.</li>
+            <li>Project submissions due next week.</li>
+            <li>Guest lecture on AI this Friday.</li>
+          </ul>
+        </section>
+      </main>
+    </div>
+
+    <script src="js/dashboard.js"></script>
+  </body>
+</html>
