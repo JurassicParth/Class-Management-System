@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Announcements | CMS</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<div class="dashboard-container">
+
+    <aside class="sidebar">
+
+        <h2>CMS</h2>
+
+        <ul>
+            <li><a href="dashboard.html"><i class="fas fa-house"></i> Dashboard</a></li>
+            <li><a href="students.html"><i class="fas fa-user-graduate"></i> Students</a></li>
+            <li><a href="teachers.html"><i class="fas fa-chalkboard-teacher"></i> Teachers</a></li>
+            <li><a href="attendance.html"><i class="fas fa-calendar-check"></i> Attendance</a></li>
+            <li><a href="courses.html"><i class="fas fa-book"></i> Courses</a></li>
+            <li><a href="announcements.html"><i class="fas fa-bullhorn"></i> Announcements</a></li>
+            <li><a href="login.html"><i class="fas fa-right-from-bracket"></i> Logout</a></li>
+        </ul>
+
+    </aside>
+
+    <main class="main-content">
+
+        <div class="page-header">
+
+            <h1>Announcements</h1>
+
+            <button class="add-btn">
+                Add Announcement
+            </button>
+
+        </div>
+
+        <input type="text" id="searchAnnouncement" class="search-box" placeholder="Search Announcements...">
+
+        <div id="announcementContainer" class="announcement-grid">
+
+        </div>
+
+    </main>
+
+</div>
+
+<div id="announcementModal" class="modal">
+
+    <div class="modal-content">
+
+        <h2 id="announcementModalTitle">
+            Add Announcement
+        </h2>
+
+        <input type="text" id="announcementTitle" placeholder="Announcement Title"
+        >
+
+        <textarea
+            id="announcementMessage"
+            placeholder="Announcement Message"
+            rows="5">
+        </textarea>
+
+        <input type="date" id="announcementDate">
+
+        <div class="modal-buttons">
+
+            <button id="saveAnnouncement">
+                Save
+            </button>
+
+            <button id="closeAnnouncementModal">
+                Cancel
+            </button>
+        </div>
+    </div>
+</div>
+
+<script src="js/announcements.js"></script>
+
+</body>
+</html>
