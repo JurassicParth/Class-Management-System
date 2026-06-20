@@ -1,134 +1,92 @@
-let marks = JSON.parse(localStorage.getItem("marks")) || [];
-let editIndex = -1;
+// 1. SELECT ALL THE ELEMENTS WE NEED FROM THE HTML
+const addMarksBtn = document.querySelector('.add-btn');
+const marksModal = document.getElementById('marksModal');
+const closeMarksModalBtn = document.getElementById('closeMarksModal');
+const saveMarksBtn = document.getElementById('saveMarks');
+const marksTableBody = document.getElementById('marksTable');
 
-const marksTable = document.getElementById("marksTable");
-const modal = document.getElementById("marksModal");
-const addBtn = document.getElementById("addMarksBtn");
-const saveBtn = document.getElementById("saveMarks");
-const closeBtn = document.getElementById("closeModal");
-const searchInput = document.getElementById("searchMarks");
+// Input fields from the modal
+const studentNameInput = document.getElementById('studentName');
+const subjectNameInput = document.getElementById('subjectName');
+const marksObtainedInput = document.getElementById('marksObtained');
+const totalMarksInput = document.getElementById('totalMarks');
 
-function calculateGrade(percentage) 
-{
-    if (percentage >= 90) 
-    {
-        return "A+";
-    }
-    if (percentage >= 80) 
-    {
-        return "A";
-    }
-    if (percentage >= 70) 
-    {
-        return "B";
-    }
-    if (percentage >= 60) 
-    {
-        return "C";
-    }
-    if (percentage >= 50) 
-    {
-        return "D";
-    }
-    return "F";
-}
-
-function renderMarks(data = marks) 
-{
-    marksTable.innerHTML = "";
-    data.forEach((mark, index) => {
-        marksTable.innerHTML += `
-        <tr>
-            <td>${mark.id}</td>
-            <td>${mark.name}</td>
-            <td>${mark.subject}</td>
-            <td>${mark.obtained}</td>
-            <td>${mark.total}</td>
-            <td>${mark.percentage}%</td>
-            <td>${mark.grade}</td>
-
-            <td>
-                <button
-                    class="edit-btn"
-                    onclick="editMark(${index})">
-                    Edit
-                </button>
-
-                <button
-                    class="delete-btn"
-                    onclick="deleteMark(${index})">
-                    Delete
-                </button>
-            </td>
-        </tr>
-        `;
-    });
-}
-
-addBtn.onclick = () => {
-    modal.style.display = "flex";
-    editIndex = -1;
-};
-
-closeBtn.onclick = () => {
-    modal.style.display = "none";
-};
-
-saveBtn.onclick = () => {
-    const id = document.getElementById("studentId").value;
-    const name = document.getElementById("studentName").value;
-    const subject = document.getElementById("subject").value;
-    const obtained = Number(document.getElementById("marksObtained").value);
-    const total = Number(document.getElementById("totalMarks").value);
-    const percentage = ((obtained / total) * 100).toFixed(2);
-    const grade = calculateGrade(percentage);
-    const markData = {id, name, subject, obtained, total, percentage, grade};
-
-    if (editIndex === -1) 
-    {
-        marks.push(markData);
-    } 
-    else 
-    {
-        marks[editIndex] = markData;
-    }
-
-    localStorage.setItem(
-        "marks",
-        JSON.stringify(marks)
-    );
-
-    renderMarks();
-
-    modal.style.display = "none";
-};
-
-function deleteMark(index)
-{
-    if(confirm("Delete this record?"))
-    {
-        marks.splice(index, 1);
-        localStorage.setItem("marks", JSON.stringify(marks));
-        renderMarks();
-    }
-}
-
-function editMark(index)
-{
-    editIndex = index;
-    let mark = marks[index];
-    document.getElementById("studentId").value = mark.id;
-    document.getElementById("studentName").value = mark.name;
-    document.getElementById("subject").value = mark.subject;
-    document.getElementById("marksObtained").value = mark.obtained;
-    document.getElementById("totalMarks").value = mark.total;
-    modal.style.display = "flex";
-}
-
-searchInput.addEventListener("keyup", () => {
-    let value = searchInput.value.toLowerCase();
-    let filtered = marks.filter(mark => mark.name.toLowerCase().includes(value));
-    renderMarks(filtered);
+// 2. EVENT LISTENER TO OPEN THE MODAL
+addMarksBtn.addEventListener('click', function() {
+    marksModal.style.display = 'flex'; // Shows the popup box
 });
 
-renderMarks();
+// 3. EVENT LISTENER TO CLOSE THE MODAL (CANCEL)
+closeMarksModalBtn.addEventListener('click', function() {
+    clearModalInputs();
+    marksModal.style.display = 'none'; // Hides the popup box
+});
+
+// 4. EVENT LISTENER FOR THE SAVE BUTTON
+saveMarksBtn.addEventListener('click', function(e) {
+    e.preventDefault(); // Stops page from reloading
+
+    // Grab values from inputs
+    const student = studentNameInput.value.trim();
+    const subject = subjectNameInput.value.trim();
+    const obtained = parseFloat(marksObtainedInput.value);
+    const total = parseFloat(totalMarksInput.value);
+
+    // Basic Validation: Ensure no fields are empty
+    if (student === "" || subject === "" || isNaN(obtained) || isNaN(total)) {
+        alert("Please fill out all the fields correctly!");
+        return; 
+    }
+
+    // Advanced Validation: Obtained marks shouldn't exceed total marks
+    if (obtained > total) {
+        alert("Marks obtained cannot be greater than total marks!");
+        return;
+    }
+
+    // 5. CALCULATE PERCENTAGE AND GRADE
+    const percentage = ((obtained / total) * 100).toFixed(2); // Rounds to 2 decimal places
+    let grade = "";
+
+    if (percentage >= 90) {
+        grade = "A+";
+    } else if (percentage >= 80) {
+        grade = "A";
+    } else if (percentage >= 70) {
+        grade = "B";
+    } else if (percentage >= 50) {
+        grade = "C";
+    } else {
+        grade = "Fail";
+    }
+
+    // 6. CREATE A NEW ROW AND INSERT IT INTO THE TABLE
+    const newRow = document.createElement('tr');
+    newRow.innerHTML = `
+        <td>${student}</td>
+        <td>${subject}</td>
+        <td>${obtained}</td>
+        <td>${total}</td>
+        <td>${percentage}%</td>
+        <td>${grade}</td>
+        <td>
+            <button class="edit-btn">Edit</button>
+            <button class="delete-btn">Delete</button>
+        </td>
+    `;
+
+    // Append our new row to the table body container
+    marksTableBody.appendChild(newRow);
+
+    // 7. HIDE MODAL AND CLEAN UP FIELDS FOR NEXT TIME
+    clearModalInputs();
+    marksModal.style.display = 'none';
+});
+
+// Helper function to empty out the boxes after saving or canceling
+function clearModalInputs() {
+    studentNameInput.value = "";
+    subjectNameInput.value = "";
+    marksObtainedInput.value = "";
+    totalMarksInput.value = "";
+}
