@@ -14,12 +14,18 @@ const studentNameInput = document.getElementById('studentName');
 const studentClassInput = document.getElementById('studentClass');
 const studentEmailInput = document.getElementById('studentEmail');
 
+// Variable to keep track of whether we are editing a student or adding a new one
+let editIndex = -1;
+
 // ==========================================================================
 // 2. MODAL VISIBILITY FUNCTIONS (OPEN / CLOSE)
 // ==========================================================================
 
 // Open Modal when "Add Student" is clicked
 addStudentBtn.addEventListener('click', function() {
+    editIndex = -1; // Reset to -1 so it knows we are adding new, not editing
+    document.getElementById('modalTitle').innerText = "Add Student";
+    clearModalInputs();
     studentModal.style.display = 'flex';
 });
 
@@ -64,12 +70,14 @@ function displayStudents() {
     studentsList.forEach(function(student, index) {
         const row = document.createElement('tr');
         
+        // ADDED BOTH EDIT AND DELETE BUTTONS BACK HERE
         row.innerHTML = `
             <td>${student.id}</td>
             <td>${student.name}</td>
             <td>${student.class}</td>
             <td>${student.email}</td>
             <td>
+                <button class="edit-btn" onclick="openEditModal(${index})">Edit</button>
                 <button class="delete-btn" onclick="deleteStudent(${index})">Delete</button>
             </td>
         `;
@@ -94,17 +102,25 @@ saveStudentBtn.addEventListener('click', function(e) {
         return;
     }
 
-    // Build a structured object for our new student
-    const newStudent = {
+    // Build a structured object for our student
+    const studentData = {
         id: idValue,
         name: nameValue,
         class: classValue,
         email: emailValue
     };
 
-    // Get current list, append our new student card, save it back to memory
     let currentStudents = JSON.parse(localStorage.getItem('students')) || [];
-    currentStudents.push(newStudent);
+
+    if (editIndex === -1) {
+        // Mode: Adding a brand new student
+        currentStudents.push(studentData);
+    } else {
+        // Mode: Overwriting an existing student at the tracked edit index position
+        currentStudents[editIndex] = studentData;
+    }
+
+    // Save back to memory
     localStorage.setItem('students', JSON.stringify(currentStudents));
 
     // Refresh layout, reset inputs, and close window panel
@@ -112,6 +128,27 @@ saveStudentBtn.addEventListener('click', function(e) {
     clearModalInputs();
     studentModal.style.display = 'none';
 });
+
+// Function to open modal and pre-fill fields when clicking "Edit"
+function openEditModal(index) {
+    let currentStudents = JSON.parse(localStorage.getItem('students')) || [];
+    const student = currentStudents[index];
+
+    // Set tracker to the item we clicked
+    editIndex = index;
+
+    // Change title text so user knows they are updating records
+    document.getElementById('modalTitle').innerText = "Edit Student Details";
+
+    // Pre-fill fields with existing values
+    studentIdInput.value = student.id;
+    studentNameInput.value = student.name;
+    studentClassInput.value = student.class;
+    studentEmailInput.value = student.email;
+
+    // Open the popup box panel
+    studentModal.style.display = 'flex';
+}
 
 // Function to delete a student record by its placement position index
 function deleteStudent(index) {
