@@ -39,15 +39,19 @@ signupForm.addEventListener('submit', function(e) {
     }
 
     // 6. IF EVERYTHING IS PERFECT
+    // Save the credentials into the browser's storage so the login page can see them!
+    localStorage.setItem('registeredUsername', username);
+    localStorage.setItem('registeredPassword', password);
+
     // Change text color to green for success
     errorMessage.style.color = "#10b981"; 
     errorMessage.textContent = "Account created successfully! Redirecting...";
 
-    // Clear the form fields so it looks clean
+    // Clear the form fields
     signupForm.reset();
 
     // Simulate a short delay, then send the admin to the login page
     setTimeout(function() {
         window.location.href = "login.html";
-    }, 2000); // 2000 milliseconds = 2 seconds
+    }, 2000);
 });
