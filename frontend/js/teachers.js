@@ -1,219 +1,68 @@
-console.log("teachers.js loaded");
+// 1. SELECT ALL THE ELEMENTS WE NEED FROM THE HTML
+const addTeacherBtn = document.querySelector('.add-btn');
+const teacherModal = document.getElementById('teacherModal');
+const closeTeacherModalBtn = document.getElementById('closeTeacherModal');
+const saveTeacherBtn = document.getElementById('saveTeacher');
+const teacherTableBody = document.getElementById('teacherTable');
 
-const addBtn = document.querySelector(".add-btn");
-const modal = document.getElementById("teacherModal");
-const closeBtn = document.getElementById("closeTeacherModal");
-const saveBtn = document.getElementById("saveTeacher");
+// Input fields inside the modal popup box
+const teacherIdInput = document.getElementById('teacherId');
+const teacherNameInput = document.getElementById('teacherName');
+const teacherSubjectInput = document.getElementById('teacherSubject');
+const teacherEmailInput = document.getElementById('teacherEmail');
 
-let teachers =
-    JSON.parse(localStorage.getItem("teachers")) || [];
-
-if (teachers.length === 0) {
-
-    teachers = [
-
-        {
-            id: "T101",
-            name: "Dr. Sharma",
-            subject: "Database Management Systems",
-            email: "sharma@cms.com"
-        },
-
-        {
-            id: "T102",
-            name: "Prof. Patel",
-            subject: "Python Programming",
-            email: "patel@cms.com"
-        }
-
-    ];
-
-    localStorage.setItem(
-        "teachers",
-        JSON.stringify(teachers)
-    );
-}
-
-let editIndex = -1;
-
-addBtn.addEventListener("click", () => {
-
-    editIndex = -1;
-
-    document.getElementById(
-        "teacherModalTitle"
-    ).textContent = "Add Teacher";
-
-    document.getElementById("teacherId").value = "";
-    document.getElementById("teacherName").value = "";
-    document.getElementById("teacherSubject").value = "";
-    document.getElementById("teacherEmail").value = "";
-
-    modal.style.display = "flex";
+// 2. OPEN THE MODAL POPUP WHEN "ADD TEACHER" IS CLICKED
+addTeacherBtn.addEventListener('click', function() {
+    teacherModal.style.display = 'flex'; // Shows the modal box
 });
 
-closeBtn.addEventListener("click", () => {
-
-    modal.style.display = "none";
+// 3. CLOSE THE MODAL POPUP WHEN "CANCEL" IS CLICKED
+closeTeacherModalBtn.addEventListener('click', function() {
+    clearTeacherInputs();
+    teacherModal.style.display = 'none'; // Hides the modal box
 });
 
-window.addEventListener("click", (e) => {
+// 4. SAVE THE DETAILS WHEN "SAVE" IS CLICKED
+saveTeacherBtn.addEventListener('click', function(e) {
+    e.preventDefault(); // Prevents the browser from reloading the page
 
-    if (e.target === modal) {
+    // Grab the values typed in by the user
+    const id = teacherIdInput.value.trim();
+    const name = teacherNameInput.value.trim();
+    const subject = teacherSubjectInput.value.trim();
+    const email = teacherEmailInput.value.trim();
 
-        modal.style.display = "none";
+    // Basic Validation Check: Ensure no empty boxes are submitted
+    if (id === "" || name === "" || subject === "" || email === "") {
+        alert("Please fill out all fields before saving!");
+        return;
     }
+
+    // 5. CREATE A NEW ROW ELEMENT DYNAMICALLY
+    const newRow = document.createElement('tr');
+    newRow.innerHTML = `
+        <td>${id}</td>
+        <td>${name}</td>
+        <td>${subject}</td>
+        <td>${email}</td>
+        <td>
+            <button class="edit-btn">Edit</button>
+            <button class="delete-btn">Delete</button>
+        </td>
+    `;
+
+    // 6. APPEND THE ROW DIRECTLY INTO YOUR TABLE BODY CONTAINER
+    teacherTableBody.appendChild(newRow);
+
+    // 7. HIDE MODAL AND WIPE BOXES CLEAN FOR NEXT TIME
+    clearTeacherInputs();
+    teacherModal.style.display = 'none';
 });
 
-saveBtn.addEventListener("click", () => {
-
-    const id =
-        document.getElementById("teacherId")
-            .value
-            .trim();
-
-    const name =
-        document.getElementById("teacherName")
-            .value
-            .trim();
-
-    const subject =
-        document.getElementById("teacherSubject")
-            .value
-            .trim();
-
-    const email =
-        document.getElementById("teacherEmail")
-            .value
-            .trim();
-
-    if (
-        !id ||
-        !name ||
-        !subject ||
-        !email
-    ) {
-
-        alert("Please fill all fields.");
-        return;
-    }
-
-    const emailPattern =
-        /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-    if (!emailPattern.test(email)) {
-
-        alert("Please enter a valid email address.");
-        return;
-    }
-
-    const duplicateTeacher =
-        teachers.find((teacher, index) =>
-            teacher.id === id &&
-            index !== editIndex
-        );
-
-    if (duplicateTeacher) {
-
-        alert("Teacher ID already exists.");
-        return;
-    }
-
-    const teacher = {id, name, subject, email};
-
-    if (editIndex === -1) {
-
-        teachers.push(teacher);
-
-    } else {
-
-        teachers[editIndex] = teacher;
-    }
-    localStorage.setItem(
-        "teachers",
-        JSON.stringify(teachers)
-    );
-    renderTeachers();
-    modal.style.display = "none";
-});
-
-function renderTeachers() {
-    const tbody = document.getElementById("teacherTable");
-    tbody.innerHTML = "";
-    if (teachers.length === 0) {
-
-        tbody.innerHTML = `
-            <tr>
-                <td colspan="5">
-                    No teachers found.
-                </td>
-            </tr>
-        `;
-        return;
-    }
-
-    teachers.forEach((teacher, index) => {
-
-        tbody.innerHTML += `
-            <tr>
-                <td>${teacher.id}</td>
-                <td>${teacher.name}</td>
-                <td>${teacher.subject}</td>
-                <td>${teacher.email}</td>
-
-                <td>
-
-                    <button class="edit-btn" onclick="editTeacher(${index})">
-                        Edit
-                    </button>
-
-                    <button class="delete-btn" onclick="deleteTeacher(${index})">
-                        Delete
-                    </button>
-                </td>
-            </tr>`;
-    });
+// Helper function to empty out all the text input fields
+function clearTeacherInputs() {
+    teacherIdInput.value = "";
+    teacherNameInput.value = "";
+    teacherSubjectInput.value = "";
+    teacherEmailInput.value = "";
 }
-
-function editTeacher(index) 
-{
-    editIndex = index;
-    const teacher = teachers[index];
-    document.getElementById("teacherModalTitle").textContent = "Edit Teacher";
-    document.getElementById("teacherId").value = teacher.id;
-    document.getElementById("teacherName").value = teacher.name;
-    document.getElementById("teacherSubject").value = teacher.subject;
-    document.getElementById("teacherEmail").value = teacher.email;
-    modal.style.display = "flex";
-}
-
-function deleteTeacher(index) {
-    const confirmDelete = confirm("Are you sure you want to delete this teacher?");
-    if (!confirmDelete) 
-    {
-        return;
-    }
-    teachers.splice(index, 1);
-    localStorage.setItem(
-        "teachers",
-        JSON.stringify(teachers)
-    );
-    renderTeachers();
-}
-
-document.getElementById("searchTeacher").addEventListener("keyup", function () {
-        const filter = this.value.toLowerCase();
-        const rows = document.querySelectorAll("#teacherTable tr");
-        rows.forEach(row => {
-            if (row.textContent.toLowerCase().includes(filter)) 
-            {
-                row.style.display = "";
-            } 
-            else 
-            {
-                row.style.display = "none";
-            }
-        });
-    });
-
-renderTeachers();
