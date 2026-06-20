@@ -1,220 +1,150 @@
-console.log("students.js loaded");
+// ==========================================================================
+// 1. SELECTING ALL REQUIRED HTML ELEMENTS
+// ==========================================================================
+const addStudentBtn = document.querySelector('.add-btn');
+const studentModal = document.getElementById('studentModal');
+const closeModalBtn = document.getElementById('closeModal');
+const saveStudentBtn = document.getElementById('saveStudent');
+const studentTableBody = document.getElementById('studentTable');
+const searchInput = document.getElementById('searchStudent');
 
-const addBtn = document.querySelector(".add-btn");
-const modal = document.getElementById("studentModal");
-const closeBtn = document.getElementById("closeModal");
-const saveBtn = document.getElementById("saveStudent");
+// Modal Input Fields
+const studentIdInput = document.getElementById('studentId');
+const studentNameInput = document.getElementById('studentName');
+const studentClassInput = document.getElementById('studentClass');
+const studentEmailInput = document.getElementById('studentEmail');
 
-let students =
-    JSON.parse(localStorage.getItem("students"));
+// ==========================================================================
+// 2. MODAL VISIBILITY FUNCTIONS (OPEN / CLOSE)
+// ==========================================================================
 
-if (!students || students.length === 0) {
+// Open Modal when "Add Student" is clicked
+addStudentBtn.addEventListener('click', function() {
+    studentModal.style.display = 'flex';
+});
 
-    students = [
+// Close Modal when "Cancel" is clicked
+closeModalBtn.addEventListener('click', function() {
+    clearModalInputs();
+    studentModal.style.display = 'none';
+});
 
-        {
-            id: "101",
-            name: "Rahul Sharma",
-            className: "BCA 1A",
-            email: "rahul@gmail.com"
-        },
+// Close Modal if user clicks anywhere outside the form container box
+window.addEventListener('click', function(event) {
+    if (event.target === studentModal) {
+        clearModalInputs();
+        studentModal.style.display = 'none';
+    }
+});
 
-        {
-            id: "102",
-            name: "Priya Patel",
-            className: "BCA 1A",
-            email: "priya@gmail.com"
-        }
-
-    ];
+// Helper function to empty out fields for next time
+function clearModalInputs() {
+    studentIdInput.value = "";
+    studentNameInput.value = "";
+    studentClassInput.value = "";
+    studentEmailInput.value = "";
 }
 
-let editIndex = -1;
+// ==========================================================================
+// 3. CORE LOGIC - SAVING & RENDERING DATA WITH LOCALSTORAGE
+// ==========================================================================
 
-addBtn.addEventListener("click", () => {
+// Load and render students from localStorage as soon as the page opens
+document.addEventListener('DOMContentLoaded', displayStudents);
 
-    editIndex = -1;
+// Function to pull data from browser memory and populate the table
+function displayStudents() {
+    // Fetch the student array from storage (fallback to empty list if none exist)
+    const studentsList = JSON.parse(localStorage.getItem('students')) || [];
+    
+    // Clear the table body first to prevent duplication
+    studentTableBody.innerHTML = "";
 
-    document.getElementById("modalTitle").textContent =
-        "Add Student";
+    // Loop through each student item and generate a table row
+    studentsList.forEach(function(student, index) {
+        const row = document.createElement('tr');
+        
+        row.innerHTML = `
+            <td>${student.id}</td>
+            <td>${student.name}</td>
+            <td>${student.class}</td>
+            <td>${student.email}</td>
+            <td>
+                <button class="delete-btn" onclick="deleteStudent(${index})">Delete</button>
+            </td>
+        `;
+        
+        studentTableBody.appendChild(row);
+    });
+}
 
-    document.getElementById("studentId").value = "";
-    document.getElementById("studentName").value = "";
-    document.getElementById("studentClass").value = "";
-    document.getElementById("studentEmail").value = "";
+// Function triggered when clicking the "Save" button
+saveStudentBtn.addEventListener('click', function(e) {
+    e.preventDefault(); // Prevents page from refreshing unexpectedly
 
-    modal.style.display = "flex";
-});
+    // Grab values from form inputs
+    const idValue = studentIdInput.value.trim();
+    const nameValue = studentNameInput.value.trim();
+    const classValue = studentClassInput.value.trim();
+    const emailValue = studentEmailInput.value.trim();
 
-closeBtn.addEventListener("click", () => {
-
-    modal.style.display = "none";
-
-});
-
-saveBtn.addEventListener("click", () => {
-
-    const id =
-        document.getElementById("studentId").value.trim();
-
-    const name =
-        document.getElementById("studentName").value.trim();
-
-    const className =
-        document.getElementById("studentClass").value.trim();
-
-    const email =
-        document.getElementById("studentEmail").value.trim();
-
-    if (
-        !id ||
-        !name ||
-        !className ||
-        !email
-    ) {
-
-        alert("Please fill all fields.");
+    // Validation check: Ensure no empty inputs
+    if (idValue === "" || nameValue === "" || classValue === "" || emailValue === "") {
+        alert("Please fill out all the student details before saving!");
         return;
     }
 
-    const student = {
-        id,
-        name,
-        className,
-        email
+    // Build a structured object for our new student
+    const newStudent = {
+        id: idValue,
+        name: nameValue,
+        class: classValue,
+        email: emailValue
     };
 
-    if (editIndex === -1) {
+    // Get current list, append our new student card, save it back to memory
+    let currentStudents = JSON.parse(localStorage.getItem('students')) || [];
+    currentStudents.push(newStudent);
+    localStorage.setItem('students', JSON.stringify(currentStudents));
 
-        students.push(student);
-
-    } else {
-
-        students[editIndex] = student;
-
-    }
-
-    localStorage.setItem(
-        "students",
-        JSON.stringify(students)
-    );
-
-    renderStudents();
-
-    modal.style.display = "none";
-
+    // Refresh layout, reset inputs, and close window panel
+    displayStudents();
+    clearModalInputs();
+    studentModal.style.display = 'none';
 });
 
-function renderStudents() {
-
-    const tbody =
-        document.getElementById("studentTable");
-
-    tbody.innerHTML = "";
-
-    students.forEach((student, index) => {
-
-        tbody.innerHTML += `
-            <tr>
-                <td>${student.id}</td>
-                <td>${student.name}</td>
-                <td>${student.className}</td>
-                <td>${student.email}</td>
-
-                <td>
-
-                    <button
-                        class="edit-btn"
-                        onclick="editStudent(${index})">
-                        Edit
-                    </button>
-
-                    <button
-                        class="delete-btn"
-                        onclick="deleteStudent(${index})">
-                        Delete
-                    </button>
-
-                </td>
-            </tr>
-        `;
-
-    });
-
-}
-
-function editStudent(index) {
-
-    editIndex = index;
-
-    const student = students[index];
-
-    document.getElementById("modalTitle").textContent =
-        "Edit Student";
-
-    document.getElementById("studentId").value =
-        student.id;
-
-    document.getElementById("studentName").value =
-        student.name;
-
-    document.getElementById("studentClass").value =
-        student.className;
-
-    document.getElementById("studentEmail").value =
-        student.email;
-
-    modal.style.display = "flex";
-
-}
-
+// Function to delete a student record by its placement position index
 function deleteStudent(index) {
-
-    if (confirm("Delete this student?")) {
-
-        students.splice(index, 1);
-
-        localStorage.setItem(
-            "students",
-            JSON.stringify(students)
-        );
-
-        renderStudents();
-
+    if (confirm("Are you sure you want to remove this student record?")) {
+        let currentStudents = JSON.parse(localStorage.getItem('students')) || [];
+        
+        // Splice removes exactly 1 element at the given index position
+        currentStudents.splice(index, 1);
+        
+        // Push the altered array back to memory storage
+        localStorage.setItem('students', JSON.stringify(currentStudents));
+        
+        // Refresh the visual display
+        displayStudents();
     }
-
 }
 
-document
-    .getElementById("searchStudent")
-    .addEventListener("keyup", function () {
+// ==========================================================================
+// 4. SEARCH & FILTERING LOGIC
+// ==========================================================================
+searchInput.addEventListener('keyup', function() {
+    const query = searchInput.value.toLowerCase();
+    const rows = studentTableBody.getElementsByTagName('tr');
 
-        const filter =
-            this.value.toLowerCase();
-
-        const rows =
-            document.querySelectorAll(
-                "#studentTable tr"
-            );
-
-        rows.forEach(row => {
-
-            if (
-                row.textContent
-                    .toLowerCase()
-                    .includes(filter)
-            ) {
-
-                row.style.display = "";
-
-            } else {
-
-                row.style.display = "none";
-
-            }
-
-        });
-
-    });
-
-renderStudents();
+    // Loop through each row in the table body
+    for (let i = 0; i < rows.length; i++) {
+        const rowText = rows[i].textContent.toLowerCase();
+        
+        // If the row text includes our typed search characters, keep it visible
+        if (rowText.includes(query)) {
+            rows[i].style.display = "";
+        } else {
+            rows[i].style.display = "none"; // Hide row from list view
+        }
+    }
+});
