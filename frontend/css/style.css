@@ -1,7 +1,6 @@
 /* =========================
    Home Page
 ========================= */
-
 html {
     scroll-behavior: smooth;
 }
@@ -128,8 +127,7 @@ html {
     border-radius: 12px;
     min-width: 220px;
     text-align: center;
-    box-shadow:
-        0 3px 12px rgba(0,0,0,0.1);
+    box-shadow: 0 3px 12px rgba(0,0,0,0.1);
 }
 
 .stat-card h2 {
@@ -164,7 +162,6 @@ html {
 }
 
 /* Features Section */
-
 .features {
     padding: 100px 40px;
     background: #f1f5f9;
@@ -228,7 +225,6 @@ html {
 }
 
 /* Footer */
-
 footer {
     background: #1e293b;
     color: white;
@@ -238,9 +234,9 @@ footer {
 }
 
 /* Responsive */
-
 @media (max-width: 768px) {
-    .navbar {
+    .navbar 
+    {
         flex-direction: column;
         gap: 15px;
         padding: 20px;
@@ -278,7 +274,6 @@ footer {
     width: 100%;
     padding: 12px;
     margin-bottom: 20px;
-
     border: 1px solid #ccc;
     border-radius: 8px;
 }
@@ -431,15 +426,12 @@ footer {
 }
 
 #loginForm .login-btn:hover {
-    background:#1d4ed8;
-    transform:translateY(-2px);
+    background: #1d4ed8;
+    transform: translateY(-2px);
 }
 
 #errorMessage {
-
     color:#ef4444;
-
     margin-top:15px;
-
     font-weight:600;
 }
