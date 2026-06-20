@@ -9,123 +9,73 @@ html {
 /* =======================
    NAVBAR
 ======================= */
-
 .navbar {
-
     position: fixed;
     top: 0;
-
     width: 100%;
-
     display: flex;
     justify-content: space-between;
     align-items: center;
-
     padding: 18px 50px;
-
     background: rgba(15, 23, 42, 0.95);
-
     backdrop-filter: blur(10px);
-
     z-index: 1000;
-
     box-sizing: border-box;
 }
 
 .logo {
-
     color: white;
-
-    font-size: 2rem;
-
+    font-size: 1.8rem;
     font-weight: 700;
+    white-space: nowrap;
 }
 
 .nav-buttons {
-
     display: flex;
-
     gap: 20px;
 }
 
 .nav-btn {
-
     text-decoration: none;
-
     color: white;
-
     padding: 12px 24px;
-
     border-radius: 12px;
-
-    background: linear-gradient(
-        145deg,
-        #334155,
-        #1e293b
-    );
-
-    box-shadow:
-        6px 6px 12px rgba(0,0,0,0.4),
-        -3px -3px 8px rgba(255,255,255,0.05);
-
+    background: linear-gradient(145deg, #334155, #1e293b);
+    box-shadow: 6px 6px 12px rgba(0,0,0,0.4), -3px -3px 8px rgba(255,255,255,0.05);
     transition: all 0.3s ease;
-
     font-weight: 500;
 }
 
 .nav-btn:hover {
-
     transform: translateY(-4px);
-
     background: #2563eb;
 }
 
 .login-btn {
-
     text-decoration: none;
-
     background: #2563eb;
-
     color: white;
-
     padding: 12px 28px;
-
     border-radius: 12px;
-
     font-weight: 600;
-
-    box-shadow:
-        0 8px 20px rgba(37,99,235,0.4);
-
+    box-shadow: 0 8px 20px rgba(37,99,235,0.4);
     transition: 0.3s;
 }
 
 .login-btn:hover {
-
     background: #1d4ed8;
-
     transform: translateY(-3px);
 }
-/* Hero Section */
 
+/* Hero Section */
 .hero {
     min-height: 100vh;
-
     padding-top: 80px;
-
     display: flex;
     justify-content: center;
     align-items: center;
-
     text-align: center;
-
-    background:
-        linear-gradient(
-            rgba(0, 0, 0, 0.55),
-            rgba(0, 0, 0, 0.55)
-        ),
-        url("../assets/images/hero-bg.jpg");
-
+    background: linear-gradient(rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0.55)), url("../assets/images/hero-bg.jpg");
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -151,11 +101,8 @@ html {
 .hero-btn {
     background: #2563eb;
     color: white;
-
     padding: 12px 25px;
-
     border-radius: 8px;
-
     transition: 0.3s;
 }
 
@@ -169,26 +116,18 @@ html {
     display: flex;
     justify-content: center;
     gap: 30px;
-
     flex-wrap: wrap;
-
     padding: 70px 20px;
-
     background: white;
 }
 
 .stat-card {
     background: #2563eb;
     color: white;
-
     padding: 30px;
-
     border-radius: 12px;
-
     min-width: 220px;
-
     text-align: center;
-
     box-shadow:
         0 3px 12px rgba(0,0,0,0.1);
 }
@@ -238,29 +177,18 @@ html {
 
 .feature-container {
     max-width: 1200px;
-
     margin: auto;
-
     display: grid;
-
-    grid-template-columns:
-        repeat(auto-fit, minmax(250px, 1fr));
-
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
     gap: 25px;
 }
 
 .feature-card {
     background: white;
-
     padding: 30px;
-
     border-radius: 12px;
-
     text-align: center;
-
-    box-shadow:
-        0 3px 12px rgba(0,0,0,0.08);
-
+    box-shadow: 0 3px 12px rgba(0,0,0,0.08);
     transition: 0.3s;
 }
 
@@ -279,7 +207,6 @@ html {
 }
 
 /* Contact Section */
-
 .contact {
     padding: 100px 40px;
     background: white;
@@ -305,18 +232,14 @@ html {
 footer {
     background: #1e293b;
     color: white;
-
     text-align: center;
-
     padding: 30px;
-
     font-size: 0.95rem;
 }
 
 /* Responsive */
 
 @media (max-width: 768px) {
-
     .navbar {
         flex-direction: column;
         gap: 15px;
@@ -380,10 +303,8 @@ footer {
 .add-btn {
     background: #2563eb;
     color: white;
-
     border: none;
     padding: 12px 20px;
-
     border-radius: 8px;
     cursor: pointer;
 }
@@ -391,10 +312,8 @@ footer {
 .edit-btn {
     background: #f59e0b;
     color: white;
-
     border: none;
     padding: 8px 12px;
-
     border-radius: 6px;
     cursor: pointer;
 }
@@ -402,40 +321,29 @@ footer {
 .delete-btn {
     background: #ef4444;
     color: white;
-
     border: none;
     padding: 8px 12px;
-
     border-radius: 6px;
     cursor: pointer;
 }
 
 .modal {
     display: none;
-
     position: fixed;
-
     top: 0;
     left: 0;
-
     width: 100%;
     height: 100%;
-
     background: rgba(0,0,0,0.5);
-
     justify-content: center;
     align-items: center;
 }
 
 .modal-content {
     background: white;
-
     padding: 30px;
-
     border-radius: 12px;
-
     width: 400px;
-
     display: flex;
     flex-direction: column;
     gap: 12px;
@@ -448,4 +356,90 @@ footer {
 .modal-buttons {
     display: flex;
     justify-content: space-between;
+}
+
+/* =========================
+   LOGIN PAGE
+========================= */
+
+.login-container {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(135deg, #0f172a, #1e293b);
+    padding:20px;
+}
+
+.login-card {
+    width:100%;
+    max-width:450px;
+    background:white;
+    padding:40px;
+    border-radius:15px;
+    box-shadow:
+    0 10px 30px rgba(0,0,0,0.2);
+    text-align:center;
+}
+
+.login-card h1 {
+    color:#1e293b;
+    margin-bottom:10px;
+}
+
+.login-card p {
+    color:#64748b;
+    margin-bottom:30px;
+}
+
+.form-group {
+    display:flex;
+    flex-direction:column;
+    text-align:left;
+    margin-bottom:20px;
+}
+
+.form-group label {
+    margin-bottom:8px;
+    font-weight:600;
+    color:#334155;
+}
+
+.form-group input {
+    padding:12px;
+    border:1px solid #cbd5e1;
+    border-radius:8px;
+    font-size:1rem;
+}
+
+.form-group input:focus {
+    outline:none;
+    border-color:#2563eb;
+}
+
+#loginForm .login-btn {
+    width:100%;
+    border:none;
+    cursor:pointer;
+    padding:14px;
+    font-size:1rem;
+    background:#2563eb;
+    color:white;
+    border-radius:10px;
+    font-weight:600;
+    transition:0.3s;
+}
+
+#loginForm .login-btn:hover {
+    background:#1d4ed8;
+    transform:translateY(-2px);
+}
+
+#errorMessage {
+
+    color:#ef4444;
+
+    margin-top:15px;
+
+    font-weight:600;
 }
