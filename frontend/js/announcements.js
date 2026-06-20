@@ -1,230 +1,70 @@
-const addBtn = document.querySelector(".add-btn");
+// 1. SELECT THE HTML ELEMENTS WE NEED
+const addAnnouncementBtn = document.querySelector('.add-btn');
+const announcementModal = document.getElementById('announcementModal');
+const closeAnnouncementModalBtn = document.getElementById('closeAnnouncementModal');
+const saveAnnouncementBtn = document.getElementById('saveAnnouncement');
+const announcementContainer = document.getElementById('announcementContainer');
 
-const modal =
-    document.getElementById("announcementModal");
+// Input fields inside the announcement popup modal box
+const announcementTitleInput = document.getElementById('announcementTitle');
+const announcementMessageInput = document.getElementById('announcementMessage');
+const announcementDateInput = document.getElementById('announcementDate');
 
-const closeBtn =
-    document.getElementById("closeAnnouncementModal");
-
-const saveBtn =
-    document.getElementById("saveAnnouncement");
-
-let announcements =
-    JSON.parse(
-        localStorage.getItem("announcements")
-    );
-
-if (!announcements) {
-    announcements = [];
-}
-
-let editIndex = -1;
-
-addBtn.addEventListener("click", () => {
-
-    editIndex = -1;
-
-    document.getElementById(
-        "announcementModalTitle"
-    ).textContent = "Add Announcement";
-
-    document.getElementById(
-        "announcementTitle"
-    ).value = "";
-
-    document.getElementById(
-        "announcementMessage"
-    ).value = "";
-
-    document.getElementById(
-        "announcementDate"
-    ).value = "";
-
-    modal.style.display = "flex";
+// 2. OPEN THE POPUP BOX WHEN "ADD ANNOUNCEMENT" IS CLICKED
+addAnnouncementBtn.addEventListener('click', function() {
+    announcementModal.style.display = 'flex'; // Shows the modal box cleanly
 });
 
-closeBtn.addEventListener("click", () => {
-
-    modal.style.display = "none";
-
+// 3. CLOSE THE POPUP BOX WHEN "CANCEL" IS CLICKED
+closeAnnouncementModalBtn.addEventListener('click', function() {
+    clearAnnouncementInputs();
+    announcementModal.style.display = 'none'; // Hides the modal box
 });
 
-saveBtn.addEventListener("click", () => {
+// 4. SAVE THE NOTICE CARD WHEN "SAVE" IS CLICKED
+saveAnnouncementBtn.addEventListener('click', function(e) {
+    e.preventDefault(); // Prevents browser from reloading the page
 
-    const title =
-        document.getElementById(
-            "announcementTitle"
-        ).value.trim();
+    // Grab values typed or selected by the admin
+    const title = announcementTitleInput.value.trim();
+    const message = announcementMessageInput.value.trim();
+    const date = announcementDateInput.value;
 
-    const message =
-        document.getElementById(
-            "announcementMessage"
-        ).value.trim();
-
-    const date =
-        document.getElementById(
-            "announcementDate"
-        ).value;
-
-    if (!title || !message || !date) {
-
-        alert("Please fill all fields");
+    // Basic Validation: Stop if any details are missing
+    if (title === "" || message === "" || date === "") {
+        alert("Please fill out the title, message, and select a date!");
         return;
     }
 
-    const announcement = {
-        title,
-        message,
-        date
-    };
-
-    if (editIndex === -1) {
-
-        announcements.push(announcement);
-
-    } else {
-
-        announcements[editIndex] =
-            announcement;
-
-    }
-
-    localStorage.setItem(
-        "announcements",
-        JSON.stringify(announcements)
-    );
-
-    renderAnnouncements();
-
-    modal.style.display = "none";
-});
-
-function renderAnnouncements() {
-
-    const container =
-        document.getElementById(
-            "announcementContainer"
-        );
-
-    container.innerHTML = "";
-
-    announcements.forEach(
-        (announcement, index) => {
-
-        container.innerHTML += `
-
-        <div class="announcement-card">
-
-            <h3>${announcement.title}</h3>
-
-            <p class="announcement-date">
-                ${announcement.date}
-            </p>
-
-            <p class="announcement-message">
-                ${announcement.message}
-            </p>
-
-            <div class="card-actions">
-
-                <button
-                    class="edit-btn"
-                    onclick="editAnnouncement(${index})">
-
-                    Edit
-
-                </button>
-
-                <button
-                    class="delete-btn"
-                    onclick="deleteAnnouncement(${index})">
-
-                    Delete
-
-                </button>
-
-            </div>
-
+    // 5. CREATE A NEW CARD DIV ELEMENT DYNAMICALLY
+    const newCard = document.createElement('div');
+    newCard.className = 'feature-card'; // Reuses your awesome grid card styles!
+    newCard.style.textAlign = 'left';   // Align text to the left for clean reading
+    
+    // Inject the structured layout text safely
+    newCard.innerHTML = `
+        <h3 style="color: #2563eb; margin-bottom: 5px;">${title}</h3>
+        <small style="color: #94a3b8; display: block; margin-bottom: 15px;">
+            <i class="fas fa-calendar-alt"></i> Posted on: ${date}
+        </small>
+        <p style="color: #475569; line-height: 1.6;">${message}</p>
+        <div style="margin-top: 20px; display: flex; gap: 10px; justify-content: flex-end;">
+            <button class="edit-btn" style="padding: 6px 12px; font-size: 0.85rem;">Edit</button>
+            <button class="delete-btn" style="padding: 6px 12px; font-size: 0.85rem;">Delete</button>
         </div>
-        `;
-    });
-}
+    `;
 
-function editAnnouncement(index) {
+    // 6. APPEND THE NEW BULLETIN CARD INTO YOUR CONTAINER GRID AREA
+    announcementContainer.appendChild(newCard);
 
-    editIndex = index;
-
-    const announcement =
-        announcements[index];
-
-    document.getElementById(
-        "announcementModalTitle"
-    ).textContent = "Edit Announcement";
-
-    document.getElementById(
-        "announcementTitle"
-    ).value = announcement.title;
-
-    document.getElementById(
-        "announcementMessage"
-    ).value = announcement.message;
-
-    document.getElementById(
-        "announcementDate"
-    ).value = announcement.date;
-
-    modal.style.display = "flex";
-}
-
-function deleteAnnouncement(index) {
-
-    if (
-        confirm(
-            "Delete this announcement?"
-        )
-    ) {
-
-        announcements.splice(index, 1);
-
-        localStorage.setItem(
-            "announcements",
-            JSON.stringify(announcements)
-        );
-
-        renderAnnouncements();
-    }
-}
-
-document
-.getElementById("searchAnnouncement")
-.addEventListener("keyup", function () {
-
-    const filter =
-        this.value.toLowerCase();
-
-    const cards =
-        document.querySelectorAll(
-            ".announcement-card"
-        );
-
-    cards.forEach(card => {
-
-        if (
-            card.textContent
-            .toLowerCase()
-            .includes(filter)
-        ) {
-
-            card.style.display = "";
-
-        } else {
-
-            card.style.display = "none";
-
-        }
-
-    });
-
+    // 7. WIPE THE INPUT BOXES CLEAN AND DISMISS MODAL
+    clearAnnouncementInputs();
+    announcementModal.style.display = 'none';
 });
 
-renderAnnouncements();
+// Helper function to empty out all the form input boxes
+function clearAnnouncementInputs() {
+    announcementTitleInput.value = "";
+    announcementMessageInput.value = "";
+    announcementDateInput.value = "";
+}
