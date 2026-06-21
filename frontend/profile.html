@@ -2,27 +2,63 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Profile | CMS</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-    <div class="login-container">
-        <div class="login-card" style="text-align: left;">
-            <h2>Manage Profile Workspace</h2>
-            <hr style="margin: 15px 0; border: 0; border-top: 1px solid #cbd5e1;">
-            
-            <form id="profileForm">
-                <div class="form-group">
-                    <label>Display Name</label>
-                    <input type="text" id="profileName" value="Parth" required>
+    <div class="dashboard-container">
+        <aside class="sidebar">
+            <h2>CMS</h2>
+            <ul>
+                <li><a href="dashboard.html"><i class="fas fa-house"></i> Dashboard</a></li>
+                <li><a href="students.html"><i class="fas fa-user-graduate"></i> Students</a></li>
+                <li><a href="teachers.html"><i class="fas fa-chalkboard-teacher"></i> Teachers</a></li>
+                <li><a href="attendance.html"><i class="fas fa-calendar-check"></i> Attendance</a></li>
+                <li><a href="marks.html"><i class="fas fa-file-lines"></i> Marks</a></li>
+                <li><a href="courses.html"><i class="fas fa-book"></i> Courses</a></li>
+                <li><a href="announcements.html"><i class="fas fa-bullhorn"></i> Announcements</a></li>
+                <li><a href="profile.html" class="active"><i class="fas fa-id-card"></i> My Profile</a></li>
+                <li><a href="login.html"><i class="fas fa-right-from-bracket"></i> Logout</a></li>
+            </ul>
+        </aside>
+
+        <main class="main-content">
+            <header class="dashboard-header">
+                <h1>Profile Workspace</h1>
+                <p>Manage your account info and credentials</p>
+            </header>
+
+            <section class="announcement-box" style="max-width: 600px; margin-top: 20px; padding: 30px;">
+                <div style="text-align: center; margin-bottom: 20px;">
+                    <div style="width: 90px; height: 90px; background: #e2e8f0; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; margin-bottom: 10px;">
+                        <i class="fas fa-user" style="font-size: 2.5rem; color: #64748b;"></i>
+                    </div>
+                    <h2 id="displayUserRole" style="text-transform: uppercase; font-size: 1rem; color: #2563eb; letter-spacing: 1px;">Role</h2>
                 </div>
-                <div class="form-group">
-                    <label>Contact Email</label>
-                    <input type="email" id="profileEmail" value="parth@cms.edu" required>
-                </div>
-                <button type="submit" class="login-btn" style="background-color: #2563eb;">Update Profile Details</button>
-            </form>
-        </div>
+
+                <form id="profileForm">
+                    <div class="form-group" style="margin-bottom: 15px; display: flex; flex-direction: column; text-align: left;">
+                        <label style="font-weight: 600; margin-bottom: 5px; color: #475569;">Full Name</label>
+                        <input type="text" id="profileName" placeholder="Enter full name" style="padding: 10px; border-radius: 6px; border: 1px solid #cbd5e1;" required>
+                    </div>
+
+                    <div class="form-group" style="margin-bottom: 15px; display: flex; flex-direction: column; text-align: left;">
+                        <label style="font-weight: 600; margin-bottom: 5px; color: #475569;">Email Address</label>
+                        <input type="email" id="profileEmail" placeholder="Enter email" style="padding: 10px; border-radius: 6px; border: 1px solid #cbd5e1;" required>
+                    </div>
+
+                    <button type="submit" class="add-btn" style="width: 100%; margin-top: 10px; padding: 12px; background: #2563eb; color: white; border: none; border-radius: 6px; font-weight: 600; cursor: pointer;">
+                        Save Profile Changes
+                    </button>
+                </form>
+            </section>
+        </main>
     </div>
+
+    <script src="js/main.js"></script>
+    <script src="js/profile.js"></script>
 </body>
 </html>
