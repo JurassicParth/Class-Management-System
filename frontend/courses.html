@@ -60,19 +60,29 @@
         </main>
     </div>
     <div id="courseModal" class="modal">
-        <div class="modal-content">
-            <h2 id="courseModalTitle">Add Course</h2>
+    <div class="modal-content">
+        <h2 id="courseModalTitle">Add Subject Definition</h2>
 
-            <input type="text" id="courseId" placeholder="Course ID" />
-            <input type="text" id="courseName" placeholder="Course Name" />
-            <input type="text" id="courseDuration" placeholder="Duration" />
-            <input type="text" id="courseTeacher" placeholder="Teacher Name" />
-            <div class="modal-buttons">
-                <button id="saveCourse">Save</button>
-                <button id="closeCourseModal">Cancel</button>
-            </div>
+        <label style="color: #334155; font-weight: 600; text-align: left; display: block; margin-bottom: 5px;">Assign to Class Standard:</label>
+        <select id="courseClassStandard" style="padding: 10px; margin-bottom: 12px; border-radius: 6px; border: 1px solid #cbd5e1;">
+            <option value="">-- Select Class --</option>
+            <option value="1st Standard">1st Standard</option>
+            <option value="2nd Standard">2nd Standard</option>
+            <option value="3rd Standard">3rd Standard</option>
+            <option value="4th Standard">4th Standard</option>
+        </select>
+
+        <input type="text" id="courseId" placeholder="Subject/Course ID" />
+        <input type="text" id="courseName" placeholder="Subject Name" />
+        <input type="text" id="courseDuration" placeholder="Weekly Hours / Duration" />
+        <input type="text" id="courseTeacher" placeholder="Assigned Teacher Name" />
+        
+        <div class="modal-buttons">
+            <button id="saveCourse">Save</button>
+            <button id="closeCourseModal">Cancel</button>
         </div>
     </div>
+</div>
     <script src="js/courses.js"></script>
 </body>
 
