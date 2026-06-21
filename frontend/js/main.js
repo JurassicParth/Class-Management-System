@@ -59,3 +59,24 @@ function applyRoleBasedUI(role) {
         }, 100);
     }
 }
+
+// LOGOUT BUTTON HANDLER
+document.addEventListener("DOMContentLoaded", function() {
+    // Look for any link that points to login.html inside our sidebar
+    const logoutLink = document.querySelector('.sidebar a[href="login.html"]');
+    
+    if (logoutLink) {
+        logoutLink.addEventListener('click', function(e) {
+            e.preventDefault(); // Stop the immediate redirect so we can clean memory first
+            
+            // Clear the active session role out of the browser
+            localStorage.removeItem('currentUserRole');
+            
+            // Show a friendly alert to confirm logout
+            alert("Logging out safely... Session cleared!");
+            
+            // Redirect the user back to the login screen
+            window.location.href = "login.html";
+        });
+    }
+});
