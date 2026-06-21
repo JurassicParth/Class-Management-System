@@ -71,3 +71,15 @@ function clearStudentInputs() {
     studentClassInput.value = "";
     studentEmailInput.value = "";
 }
+
+// Append this exact block to the very bottom of your frontend/js/students.js file
+// INTERACTIVE DELETE HANDLER FOR STUDENT ROWS
+studentTableBody.addEventListener('click', function(e) {
+    // Check if the clicked element has our action class or text match
+    if (e.target.textContent === 'Delete' || e.target.classList.contains('delete-btn')) {
+        if (confirm("Are you sure you want to completely erase this student record?")) {
+            const rowTarget = e.target.closest('tr');
+            rowTarget.remove(); // Removes the student row right out of the browser view
+        }
+    }
+});
