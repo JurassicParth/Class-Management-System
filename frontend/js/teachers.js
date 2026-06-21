@@ -5,36 +5,38 @@ const closeTeacherModalBtn = document.getElementById('closeTeacherModal');
 const saveTeacherBtn = document.getElementById('saveTeacher');
 const teacherTableBody = document.getElementById('teacherTable');
 
-// Input fields inside the modal popup box
+// Input fields inside our modified layout popup box
 const teacherIdInput = document.getElementById('teacherId');
 const teacherNameInput = document.getElementById('teacherName');
-const teacherSubjectInput = document.getElementById('teacherSubject');
+const teacherClassInput = document.getElementById('teacherAssignedClass');
+const teacherSubjectInput = document.getElementById('teacherAssignedSubject');
 const teacherEmailInput = document.getElementById('teacherEmail');
 
 // 2. OPEN THE MODAL POPUP WHEN "ADD TEACHER" IS CLICKED
 addTeacherBtn.addEventListener('click', function() {
-    teacherModal.style.display = 'flex'; // Shows the modal box
+    teacherModal.style.display = 'flex'; // Shows the popup box
 });
 
 // 3. CLOSE THE MODAL POPUP WHEN "CANCEL" IS CLICKED
 closeTeacherModalBtn.addEventListener('click', function() {
     clearTeacherInputs();
-    teacherModal.style.display = 'none'; // Hides the modal box
+    teacherModal.style.display = 'none'; // Hides the popup box
 });
 
-// 4. SAVE THE DETAILS WHEN "SAVE" IS CLICKED
+// 4. SAVE AND DISCARD INTERACTIVE COMPONENT ACTION ROUTINES (CREATE & READ)
 saveTeacherBtn.addEventListener('click', function(e) {
-    e.preventDefault(); // Prevents the browser from reloading the page
+    e.preventDefault(); // Prevents page reload
 
-    // Grab the values typed in by the user
+    // Grab the values typed/selected by the user
     const id = teacherIdInput.value.trim();
     const name = teacherNameInput.value.trim();
-    const subject = teacherSubjectInput.value.trim();
+    const assignedClass = teacherClassInput.value;
+    const assignedSubject = teacherSubjectInput.value;
     const email = teacherEmailInput.value.trim();
 
-    // Basic Validation Check: Ensure no empty boxes are submitted
-    if (id === "" || name === "" || subject === "" || email === "") {
-        alert("Please fill out all fields before saving!");
+    // Check if any options are left unselected
+    if (id === "" || name === "" || assignedClass === "" || assignedSubject === "" || email === "") {
+        alert("Please fill out all fields and complete assignments before saving.");
         return;
     }
 
@@ -43,11 +45,10 @@ saveTeacherBtn.addEventListener('click', function(e) {
     newRow.innerHTML = `
         <td>${id}</td>
         <td>${name}</td>
-        <td>${subject}</td>
+        <td><strong>${assignedClass}</strong> - ${assignedSubject}</td>
         <td>${email}</td>
         <td>
-            <button class="edit-btn">Edit</button>
-            <button class="delete-btn">Delete</button>
+            <button class="delete-btn grid-delete-btn" style="padding: 6px 12px; background-color: #ef4444; color: white; border: none; border-radius: 4px; cursor: pointer;">Delete</button>
         </td>
     `;
 
@@ -59,10 +60,21 @@ saveTeacherBtn.addEventListener('click', function(e) {
     teacherModal.style.display = 'none';
 });
 
-// Helper function to empty out all the text input fields
+// 8. INTERACTIVE DELETE HANDLER (DELETE)
+teacherTableBody.addEventListener('click', function(e) {
+    if (e.target.classList.contains('grid-delete-btn')) {
+        if (confirm("Are you sure you want to remove this teacher record and assignments?")) {
+            const rowTarget = e.target.closest('tr');
+            rowTarget.remove(); // Drops the row dynamically out of your dashboard table view
+        }
+    }
+});
+
+// Helper function to empty out all input selections
 function clearTeacherInputs() {
     teacherIdInput.value = "";
     teacherNameInput.value = "";
+    teacherClassInput.value = "";
     teacherSubjectInput.value = "";
     teacherEmailInput.value = "";
 }
