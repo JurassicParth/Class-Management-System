@@ -1,210 +1,76 @@
-const addBtn = document.querySelector(".add-btn");
-const modal = document.getElementById("courseModal");
-const closeBtn = document.getElementById("closeCourseModal");
-const saveBtn = document.getElementById("saveCourse");
+// 1. SELECT ALL HTML ELEMENTS
+const addCourseBtn = document.querySelector('.add-btn');
+const courseModal = document.getElementById('courseModal');
+const closeCourseModalBtn = document.getElementById('closeCourseModal');
+const saveCourseBtn = document.getElementById('saveCourse');
+const courseTableBody = document.getElementById('courseTable');
 
-let courses =
-    JSON.parse(localStorage.getItem("courses"));
+// Input fields including our new Class selector
+const courseClassStandardInput = document.getElementById('courseClassStandard');
+const courseIdInput = document.getElementById('courseId');
+const courseNameInput = document.getElementById('courseName');
+const courseDurationInput = document.getElementById('courseDuration');
+const courseTeacherInput = document.getElementById('courseTeacher');
 
-if (!courses || courses.length === 0) {
-
-    courses = [
-
-        {
-            id: "C101",
-            name: "Database Systems",
-            duration: "6 Months",
-            teacher: "Dr. Sharma"
-        },
-
-        {
-            id: "C102",
-            name: "Python Programming",
-            duration: "4 Months",
-            teacher: "Prof. Patel"
-        }
-
-    ];
-}
-
-let editIndex = -1;
-
-addBtn.addEventListener("click", () => {
-
-    editIndex = -1;
-
-    document.getElementById("courseModalTitle").textContent =
-        "Add Course";
-
-    document.getElementById("courseId").value = "";
-    document.getElementById("courseName").value = "";
-    document.getElementById("courseDuration").value = "";
-    document.getElementById("courseTeacher").value = "";
-
-    modal.style.display = "flex";
+// 2. OPEN AND CLOSE MODAL BOX FUNCTIONS
+addCourseBtn.addEventListener('click', function() {
+    courseModal.style.display = 'flex';
 });
 
-closeBtn.addEventListener("click", () => {
-
-    modal.style.display = "none";
-
+closeCourseModalBtn.addEventListener('click', function() {
+    clearCourseInputs();
+    courseModal.style.display = 'none';
 });
 
-saveBtn.addEventListener("click", () => {
+// 3. SAVE SUBJECT ROUTINE (CREATE & READ)
+saveCourseBtn.addEventListener('click', function(e) {
+    e.preventDefault();
 
-    const id =
-        document.getElementById("courseId").value.trim();
+    const classStandard = courseClassStandardInput.value;
+    const id = courseIdInput.value.trim();
+    const name = courseNameInput.value.trim();
+    const duration = courseDurationInput.value.trim();
+    const teacher = courseTeacherInput.value.trim();
 
-    const name =
-        document.getElementById("courseName").value.trim();
-
-    const duration =
-        document.getElementById("courseDuration").value.trim();
-
-    const teacher =
-        document.getElementById("courseTeacher").value.trim();
-
-    if (!id || !name || !duration || !teacher) {
-
-        alert("Please fill all fields.");
+    if (classStandard === "" || id === "" || name === "" || duration === "" || teacher === "") {
+        alert("Please fill out all field paths before continuing.");
         return;
     }
 
-    const course = {
-        id,
-        name,
-        duration,
-        teacher
-    };
+    // Create entry row
+    const newRow = document.createElement('tr');
+    newRow.innerHTML = `
+        <td>${id}</td>
+        <td><strong>${classStandard}</strong> - ${name}</td>
+        <td>${duration}</td>
+        <td>${teacher}</td>
+        <td>
+            <button class="delete-btn grid-delete-btn" style="padding: 6px 12px; background-color: #ef4444; color: white; border: none; border-radius: 4px; cursor: pointer;">Delete</button>
+        </td>
+    `;
 
-    if (editIndex === -1) {
+    courseTableBody.appendChild(newRow);
 
-        courses.push(course);
-
-    } else {
-
-        courses[editIndex] = course;
-
-    }
-
-    localStorage.setItem(
-        "courses",
-        JSON.stringify(courses)
-    );
-
-    renderCourses();
-
-    modal.style.display = "none";
+    // Close and reset
+    clearCourseInputs();
+    courseModal.style.display = 'none';
 });
 
-function renderCourses() {
-
-    const tbody =
-        document.getElementById("courseTable");
-
-    tbody.innerHTML = "";
-
-    courses.forEach((course, index) => {
-
-        tbody.innerHTML += `
-            <tr>
-                <td>${course.id}</td>
-                <td>${course.name}</td>
-                <td>${course.duration}</td>
-                <td>${course.teacher}</td>
-
-                <td>
-
-                    <button
-                        class="edit-btn"
-                        onclick="editCourse(${index})">
-                        Edit
-                    </button>
-
-                    <button
-                        class="delete-btn"
-                        onclick="deleteCourse(${index})">
-                        Delete
-                    </button>
-
-                </td>
-
-            </tr>
-        `;
-
-    });
-
-}
-
-function editCourse(index) {
-
-    editIndex = index;
-
-    const course = courses[index];
-
-    document.getElementById("courseModalTitle").textContent =
-        "Edit Course";
-
-    document.getElementById("courseId").value =
-        course.id;
-
-    document.getElementById("courseName").value =
-        course.name;
-
-    document.getElementById("courseDuration").value =
-        course.duration;
-
-    document.getElementById("courseTeacher").value =
-        course.teacher;
-
-    modal.style.display = "flex";
-}
-
-function deleteCourse(index) {
-
-    if (confirm("Delete this course?")) {
-
-        courses.splice(index, 1);
-
-        localStorage.setItem(
-            "courses",
-            JSON.stringify(courses)
-        );
-
-        renderCourses();
-    }
-}
-
-document
-.getElementById("searchCourse")
-.addEventListener("keyup", function () {
-
-    const filter =
-        this.value.toLowerCase();
-
-    const rows =
-        document.querySelectorAll(
-            "#courseTable tr"
-        );
-
-    rows.forEach(row => {
-
-        if (
-            row.textContent
-            .toLowerCase()
-            .includes(filter)
-        ) {
-
-            row.style.display = "";
-
-        } else {
-
-            row.style.display = "none";
-
+// 4. DELETE SELECTION LOGIC (DELETE)
+// Using an event listener on the table body to catch delete clicks instantly
+courseTableBody.addEventListener('click', function(e) {
+    if (e.target.classList.contains('grid-delete-btn')) {
+        if (confirm("Are you sure you want to remove this subject definition?")) {
+            const rowSelected = e.target.closest('tr');
+            rowSelected.remove();
         }
-
-    });
-
+    }
 });
 
-renderCourses();
+function clearCourseInputs() {
+    courseClassStandardInput.value = "";
+    courseIdInput.value = "";
+    courseNameInput.value = "";
+    courseDurationInput.value = "";
+    courseTeacherInput.value = "";
+}
