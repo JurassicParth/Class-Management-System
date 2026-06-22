@@ -5,7 +5,7 @@ from routes.students import students_bp
 
 app = Flask(__name__)
 
-CORS(app)
+CORS(app, resources={r"/api/*": {"origins": "http://127.0.0.1:5500"}})
 
 app.register_blueprint(students_bp)
 
