@@ -2,7 +2,7 @@
 const loginForm = document.getElementById('loginForm');
 const errorMessage = document.getElementById('errorMessage');
 
-loginForm.addEventListener('submit', async function(e) {
+loginForm.addEventListener('submit', async function (e) {
     e.preventDefault(); // Stop page from reloading automatically
 
     const usernameField = document.getElementById('username').value.trim();
@@ -22,7 +22,7 @@ loginForm.addEventListener('submit', async function(e) {
 
     try {
         // 2. DISPATCH A FETCH POLLING POST COMMAND TO FLASK SERVER
-        const response = await fetch('http://127.0.0.1:5000/api/login', {
+        const response = await fetch('http://127.0.0.1:8080/api/login', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -48,7 +48,7 @@ loginForm.addEventListener('submit', async function(e) {
         errorMessage.textContent = "Authentication complete! Entering system dashboard...";
 
         // Redirect to dashboard layout after a short 1 second delay
-        setTimeout(function() {
+        setTimeout(function () {
             window.location.href = "dashboard.html";
         }, 1000);
 
