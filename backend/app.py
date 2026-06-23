@@ -13,7 +13,7 @@ CORS(app, resources={r"/*": {"origins": "*"}}, supports_credentials=True)
 db = mysql.connector.connect(
     host="localhost",
     user="root",         # Change if your MySQL username is different
-    password="",         # Put your MySQL password inside the quotes
+    password="success@7",         # Put your MySQL password inside the quotes
     database="cms_db"    # Make sure this matches your database name
 )
 
