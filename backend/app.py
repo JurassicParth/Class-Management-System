@@ -2,16 +2,16 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 import mysql.connector
 
-# Import the shared database objects
+# Import the shared database objects and modules
 from database.db import connection, cursor
 from routes.students import students_bp
 
 app = Flask(__name__)
 
-# Broad setup allows all methods (GET, POST, OPTIONS) and headers from any local origin
+# Broad setup allows all methods (GET, POST, PUT, DELETE, OPTIONS) from any local origin
 CORS(app, resources={r"/*": {"origins": "*"}}, supports_credentials=True)
 
-# Registering your external blueprint route modules
+# Registering your complete student route blueprint
 app.register_blueprint(students_bp)
 
 @app.route("/")
@@ -30,7 +30,7 @@ def login():
     username = data.get('username')
     password = data.get('password')
 
-    # Query the admins table using our unified cursor
+    # Query the admins table using our unified database connection
     query = "SELECT * FROM admins WHERE username = %s AND password_hash = %s"
     cursor.execute(query, (username, password))
     admin = cursor.fetchone()
