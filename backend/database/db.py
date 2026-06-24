@@ -1,5 +1,6 @@
 import mysql.connector
 
+# Centralized database connection configuration
 connection = mysql.connector.connect(
     host="localhost",
     user="root",
@@ -7,6 +8,7 @@ connection = mysql.connector.connect(
     database="cms_db"
 )
 
+# This cursor is shared across your main app and route blueprints
 cursor = connection.cursor(dictionary=True)
 
 print("Database Connected Successfully")
