@@ -1,34 +1,33 @@
-// This function reads data from localStorage and updates the UI boxes
-function updateDashboardStats() {
-    // 1. Grab elements from the page
-    const studentsBox = document.getElementById('totalStudentsCount');
-    const teachersBox = document.getElementById('totalTeachersCount');
-    const testsBox = document.getElementById('totalTestsCount');
-    const attendanceBox = document.getElementById('averageAttendance');
+document.addEventListener("DOMContentLoaded", () => {
+    fetchDashboardStats();
+});
 
-    // 2. Fetch the student array from localStorage (fallback to empty list if none exist)
-    const studentsList = JSON.parse(localStorage.getItem('students')) || [];
-    studentsBox.innerText = studentsList.length; // Set total count
+async function fetchDashboardStats() {
+    try {
+        // Fetch active students array from backend
+        const studentResponse = await fetch("http://127.0.0.1:8080/students");
+        if (studentResponse.ok) {
+            const students = await studentResponse.get_json() || await studentResponse.json();
+            document.getElementById("totalStudentsCount").textContent = students.length;
+        } else {
+            document.getElementById("totalStudentsCount").textContent = "0";
+        }
 
-    // 3. Fetch the teacher array from localStorage
-    const teachersList = JSON.parse(localStorage.getItem('teachers')) || [];
-    teachersBox.innerText = teachersList.length; // Set total count
+        // Fetch active teachers array from backend (Placeholder endpoint until teachers blueprint is added)
+        // If your teacher endpoint isn't built yet, it safely falls back to 0 instead of hardcoded 3
+        try {
+            const teacherResponse = await fetch("http://127.0.0.1:8080/teachers");
+            if (teacherResponse.ok) {
+                const teachers = await teacherResponse.json();
+                document.getElementById("totalTeachersCount").textContent = teachers.length;
+            } else {
+                document.getElementById("totalTeachersCount").textContent = "0";
+            }
+        } catch (e) {
+            document.getElementById("totalTeachersCount").textContent = "0";
+        }
 
-    // 4. Fetch the marks array to calculate total tests conducted
-    const marksList = JSON.parse(localStorage.getItem('marks')) || [];
-    testsBox.innerText = marksList.length; // Each entry counts as a record/test
-
-    // 5. Fetch attendance records to display an average percentage
-    const attendanceList = JSON.parse(localStorage.getItem('attendance')) || [];
-    if (attendanceList.length > 0) {
-        // Count how many records are marked "Present"
-        const presentCount = attendanceList.filter(record => record.status === 'Present').length;
-        const average = ((presentCount / attendanceList.length) * 100).toFixed(0);
-        attendanceBox.innerText = `${average}%`;
-    } else {
-        attendanceBox.innerText = "0%"; // Fallback if no attendance marked yet
+    } catch (error) {
+        console.error("Error loading dashboard data updates:", error);
     }
 }
-
-// Run this logic immediately when the dashboard screen opens
-document.addEventListener('DOMContentLoaded', updateDashboardStats);
