@@ -8,11 +8,9 @@ students_bp = Blueprint("students", __name__)
 @students_bp.route("/students", methods=["GET"])
 def get_students():
     try:
-        # Re-verify database connection status
         connection.ping(reconnect=True)
         cursor.execute("SELECT * FROM students")
         students = cursor.fetchall()
-        print("Students Found:", students)
         return jsonify(students), 200
     except Exception as e:
         print("Error fetching students:", str(e))
@@ -40,14 +38,16 @@ def add_student():
         if not name or not student_class or not email:
             return jsonify({"error": "All fields are required"}), 400
 
+        # Attempting insertion into standard columns
         query = "INSERT INTO students (id, name, class, email) VALUES (%s, %s, %s, %s)"
         cursor.execute(query, (student_id, name, student_class, email))
         connection.commit()
 
         return jsonify({"message": "Student added successfully!"}), 201
     except Exception as e:
-        print("Error adding student:", str(e))
-        return jsonify({"error": "Failed to add student to database"}), 500
+        print("Database Write Error details:", str(e))
+        # This sends the EXACT MySQL error details back to your alert window
+        return jsonify({"error": f"Database Insertion Failure: {str(e)}"}), 500
 
 # 3. UPDATE AN EXISTING STUDENT
 @students_bp.route("/students/<string:student_id>", methods=["PUT", "OPTIONS"])
