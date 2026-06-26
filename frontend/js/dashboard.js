@@ -1,33 +1,30 @@
 document.addEventListener("DOMContentLoaded", () => {
-    fetchDashboardStats();
+    // Run the statistics loader setup right away
+    fetchDashboardStatistics();
 });
 
-async function fetchDashboardStats() {
+async function fetchDashboardStatistics() {
+    // Target your local Flask server stats link
+    const statsUrl = "http://127.0.0.1:8080/dashboard/stats";
+
     try {
-        // Fetch active students array from backend
-        const studentResponse = await fetch("http://127.0.0.1:8080/students");
-        if (studentResponse.ok) {
-            const students = await studentResponse.get_json() || await studentResponse.json();
-            document.getElementById("totalStudentsCount").textContent = students.length;
-        } else {
-            document.getElementById("totalStudentsCount").textContent = "0";
-        }
+        const response = await fetch(statsUrl);
+        if (!response.ok) throw new Error("Could not fetch dashboard metrics endpoint");
 
-        // Fetch active teachers array from backend (Placeholder endpoint until teachers blueprint is added)
-        // If your teacher endpoint isn't built yet, it safely falls back to 0 instead of hardcoded 3
-        try {
-            const teacherResponse = await fetch("http://127.0.0.1:8080/teachers");
-            if (teacherResponse.ok) {
-                const teachers = await teacherResponse.json();
-                document.getElementById("totalTeachersCount").textContent = teachers.length;
-            } else {
-                document.getElementById("totalTeachersCount").textContent = "0";
-            }
-        } catch (e) {
-            document.getElementById("totalTeachersCount").textContent = "0";
-        }
+        const data = await response.json();
 
-    } catch (error) {
-        console.error("Error loading dashboard data updates:", error);
+        // Target the element containers on dashboard.html and assign counts
+        const studentsContainer = document.getElementById("totalStudentsCount");
+        const teachersContainer = document.getElementById("totalTeachersCount");
+        const attendanceContainer = document.getElementById("averageAttendance");
+        const coursesContainer = document.getElementById("totalTestsCount"); // Re-purposed as courses count or tests
+
+        if (studentsContainer) studentsContainer.textContent = data.totalStudents;
+        if (teachersContainer) teachersContainer.textContent = data.totalTeachers;
+        if (attendanceContainer) attendanceContainer.textContent = data.averageAttendance;
+        if (coursesContainer) coursesContainer.textContent = data.totalCourses;
+
+    } catch (err) {
+        console.error("Dashboard engine connection error:", err);
     }
 }
