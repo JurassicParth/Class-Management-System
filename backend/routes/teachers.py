@@ -33,9 +33,9 @@ def add_teacher():
         if not teacher_id or not name or not subject or not email:
             return jsonify({"error": "All fields are required"}), 400
 
-        # We add 'teacher123' as a default password fallback so the SQL insert doesn't fail
-        query = "INSERT INTO teachers (id, name, subject, email, password_hash) VALUES (%s, %s, %s, %s, %s)"
-        cursor.execute(query, (teacher_id, name, subject, email, "teacher123"))
+        # Removed password_hash column to match your local MySQL schema columns perfectly
+        query = "INSERT INTO teachers (id, name, subject, email) VALUES (%s, %s, %s, %s)"
+        cursor.execute(query, (teacher_id, name, subject, email))
         connection.commit()
 
         return jsonify({"message": "Teacher added successfully!"}), 201
