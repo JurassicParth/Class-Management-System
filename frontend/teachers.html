@@ -6,100 +6,37 @@
     <title>Teachers | CMS</title>
 
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 
     <div class="dashboard-container">
 
-        <!-- Sidebar -->
-
         <aside class="sidebar">
-
             <h2>CMS</h2>
-
             <ul>
-                <li>
-                    <a href="profile.html">
-                        <i class="fas fa-id-card"></i> My Profile
-                    </a>
-                </li>
-                
-                <li>
-                    <a href="dashboard.html">
-                        <i class="fas fa-house"></i> Dashboard
-                    </a>
-                </li>
-
-                <li>
-                    <a href="students.html">
-                        <i class="fas fa-user-graduate"></i> Students
-                    </a>
-                </li>
-
-                <li>
-                    <a href="teachers.html">
-                        <i class="fas fa-chalkboard-teacher"></i> Teachers
-                    </a>
-                </li>
-
-                <li>
-                    <a href="attendance.html">
-                        <i class="fas fa-calendar-check"></i> Attendance
-                    </a>
-                </li>
-
-                <li>
-                    <a href="marks.html">
-                        <i class="fas fa-file-lines"></i> Marks
-                    </a>
-                </li>
-
-                <li>
-                    <a href="courses.html">
-                        <i class="fas fa-book"></i> Courses
-                    </a>
-                </li>
-
-                <li>
-                    <a href="announcements.html">
-                        <i class="fas fa-bullhorn"></i> Announcements
-                    </a>
-                </li>
-
-                <li>
-                    <a href="login.html">
-                        <i class="fas fa-right-from-bracket"></i> Logout
-                    </a>
-                </li>
+                <li><a href="profile.html"><i class="fas fa-id-card"></i> My Profile</a></li>
+                <li><a href="dashboard.html"><i class="fas fa-house"></i> Dashboard</a></li>
+                <li><a href="students.html"><i class="fas fa-user-graduate"></i> Students</a></li>
+                <li><a href="teachers.html"><i class="fas fa-chalkboard-teacher"></i> Teachers</a></li>
+                <li><a href="attendance.html"><i class="fas fa-calendar-check"></i> Attendance</a></li>
+                <li><a href="marks.html"><i class="fas fa-file-lines"></i> Marks</a></li>
+                <li><a href="courses.html"><i class="fas fa-book"></i> Courses</a></li>
+                <li><a href="announcements.html"><i class="fas fa-bullhorn"></i> Announcements</a></li>
+                <li><a href="login.html"><i class="fas fa-right-from-bracket"></i> Logout</a></li>
             </ul>
-
         </aside>
 
-        <!-- Main Content -->
-
         <main class="main-content">
-
             <div class="page-header">
                 <h1>Teacher Management</h1>
-
-                <button class="add-btn">
-                    Add Teacher
-                </button>
+                <button class="add-btn">Add Teacher</button>
             </div>
 
-            <input
-                type="text"
-                id="searchTeacher"
-                placeholder="Search Teacher..."
-                class="search-box"
-            >
+            <input type="text" id="searchTeacher" placeholder="Search Teacher..." class="search-box">
 
             <table class="student-table">
-
                 <thead>
                     <tr>
                         <th>ID</th>
@@ -109,66 +46,36 @@
                         <th>Actions</th>
                     </tr>
                 </thead>
-
                 <tbody id="teacherTable"></tbody>
-
             </table>
-
         </main>
-
     </div>
-
-    <!-- Teacher Modal -->
 
     <div id="teacherModal" class="modal">
-    <div class="modal-content">
-        <h2 id="teacherModalTitle">Add Teacher & Assignment</h2>
+        <div class="modal-content">
+            <h2 id="modalTitle">Add Teacher</h2>
 
-        <input type="text" id="teacherId" placeholder="Teacher ID">
+            <input type="text" id="teacherId" placeholder="Teacher ID (e.g., T101)">
+            <input type="text" id="teacherName" placeholder="Full Name">
 
-        <input type="text" id="teacherName" placeholder="Teacher Name">
+            <label style="color: #334155; font-weight: 600; text-align: left; display: block; margin-top: 10px; margin-bottom: 5px;">Assign Subject:</label>
+            <select id="teacherAssignedSubject" style="padding: 10px; margin-bottom: 12px; border-radius: 6px; border: 1px solid #cbd5e1; width: 100%;">
+                <option value="">-- Select Subject --</option>
+                <option value="Mathematics">Mathematics</option>
+                <option value="Science">Science</option>
+                <option value="English">English</option>
+                <option value="Computer Applications">Computer Applications</option>
+            </select>
 
-        <label style="color: #334155; font-weight: 600; text-align: left; display: block; margin-top: 10px; margin-bottom: 5px;">Assign Class Standard:</label>
-        <select id="teacherAssignedClass" style="padding: 10px; margin-bottom: 12px; border-radius: 6px; border: 1px solid #cbd5e1; width: 100%;">
-            <option value="">-- Select Class --</option>
-            <option value="1st Standard">1st</option>
-            <option value="2nd Standard">2nd</option>
-            <option value="3rd Standard">3rd</option>
-            <option value="4th Standard">4th</option>
-            <option value="5th Standard">5th</option>
-            <option value="6th Standard">6th</option>
-            <option value="7th Standard">7th</option>
-            <option value="8th Standard">8th</option>
-            <option value="9th Standard">9th</option>
-            <option value="10th Standard">10th</option>
-            <option value="11th Standard">11th</option>
-            <option value="12th Standard">12th</option>
-            <option value="1st PU">1st PU</option>
-            <option value="2nd PU">2nd</option>
-        </select>
+            <input type="email" id="teacherEmail" placeholder="Email Address">
 
-        <label style="color: #334155; font-weight: 600; text-align: left; display: block; margin-bottom: 5px;">Assign Subject:</label>
-        <select id="teacherAssignedSubject" style="padding: 10px; margin-bottom: 12px; border-radius: 6px; border: 1px solid #cbd5e1; width: 100%;">
-            <option value="">-- Select Subject --</option>
-            <option value="Mathematics">Mathematics</option>
-            <option value="Science">Science</option>
-            <option value="English">English</option>
-            <option value="Computer Applications">Computer Applications</option>
-            <option value="Social Science">Social Science</option>
-            <option value="Kannada">Kannada</option>
-            <option value="Hindi">Hindi</option>
-        </select>
-
-        <input type="email" id="teacherEmail" placeholder="Email Address">
-
-        <div class="modal-buttons">
-            <button id="saveTeacher">Save</button>
-            <button id="closeTeacherModal">Cancel</button>
+            <div class="modal-buttons">
+                <button id="saveTeacher">Save</button>
+                <button id="closeTeacherModal">Cancel</button>
+            </div>
         </div>
     </div>
-</div>
 
     <script src="js/teachers.js"></script>
-    <script src="js/main.js"></script>
 </body>
 </html>
