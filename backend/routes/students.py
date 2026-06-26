@@ -9,7 +9,7 @@ students_bp = Blueprint("students", __name__)
 def get_students():
     try:
         connection.ping(reconnect=True)
-        # Select from your precise schema
+        # Select from your specific schema and alias them for the frontend layout
         cursor.execute("SELECT student_id AS id, name, class_name AS class, email FROM students")
         students = cursor.fetchall()
         return jsonify(students), 200
@@ -32,14 +32,14 @@ def add_student():
         class_val = data.get("class")
         email_val = data.get("email")
 
-        # Validate your custom SRN format logic (CA + exactly 3 digits)
+        # Your exact format logic rule: 'CA' followed by exactly 3 digits
         if not id_val or not re.match(r"^CA\d{3}$", id_val):
             return jsonify({"error": "Invalid Student ID format. Must be 'CA' followed by exactly 3 digits (e.g., CA101)."}), 400
 
         if not name_val or not class_val or not email_val:
             return jsonify({"error": "All fields are required"}), 400
 
-        # Aligns perfectly with your column names: student_id and class_name
+        # Aligns perfectly with your schema columns: student_id and class_name
         query = "INSERT INTO students (student_id, name, class_name, email) VALUES (%s, %s, %s, %s)"
         cursor.execute(query, (id_val, name_val, class_val, email_val))
         connection.commit()
