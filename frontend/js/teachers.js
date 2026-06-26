@@ -19,32 +19,32 @@ let isEditMode = false;
 let currentEditId = null;
 
 document.addEventListener("DOMContentLoaded", () => {
-    // Dynamically look up DOM elements since ids are customized in teachers.html
-    teacherTable = document.querySelector(".student-table tbody") || document.getElementById("teacherTable");
-    teacherModal = document.getElementById("teacherModal") || document.querySelector(".modal");
-    modalTitle = teacherModal ? teacherModal.querySelector("h2") : null;
-    searchTeacher = document.getElementById("searchTeacher") || document.querySelector(".search-box");
+    // Look up DOM elements accurately
+    teacherTable = document.getElementById("teacherTable");
+    teacherModal = document.getElementById("teacherModal");
+    modalTitle = document.getElementById("modalTitle");
+    searchTeacher = document.getElementById("searchTeacher");
 
-    teacherIdInput = document.getElementById("teacherId") || (teacherModal ? teacherModal.querySelectorAll("input")[0] : null);
-    teacherNameInput = document.getElementById("teacherName") || (teacherModal ? teacherModal.querySelectorAll("input")[1] : null);
-    teacherSubjectSelect = document.getElementById("teacherAssignedSubject") || document.querySelector("select");
+    teacherIdInput = document.getElementById("teacherId");
+    teacherNameInput = document.getElementById("teacherName");
+    teacherSubjectSelect = document.getElementById("teacherAssignedSubject");
     teacherEmailInput = document.getElementById("teacherEmail");
 
     addBtn = document.querySelector(".add-btn");
     saveTeacherBtn = document.getElementById("saveTeacher");
-    closeTeacherModalBtn = document.getElementById("closeTeacherModal") || document.getElementById("closeModal");
+    closeTeacherModalBtn = document.getElementById("closeTeacherModal");
 
-    // Load initial list
+    // Load initial list rows
     loadTeachersList();
 
-    // Event Listeners setup
+    // Event Wireups
     if (addBtn) addBtn.addEventListener("click", openAddModal);
     if (closeTeacherModalBtn) closeTeacherModalBtn.addEventListener("click", closeFormModal);
     if (saveTeacherBtn) saveTeacherBtn.addEventListener("click", handleSaveData);
     if (searchTeacher) searchTeacher.addEventListener("input", filterTableData);
 });
 
-// 1. FETCH ALL TEACHERS
+// 1. FETCH ALL TEACHERS FROM FLASK API
 async function loadTeachersList() {
     try {
         const response = await fetch("http://127.0.0.1:8080/teachers");
@@ -60,7 +60,7 @@ async function loadTeachersList() {
     }
 }
 
-// 2. RENDER THE RECORDS IN TABLE
+// 2. RENDER RECORDS IN HTML DATATABLE
 function renderTableRows(teachersArray) {
     if (!teacherTable) return;
     teacherTable.innerHTML = "";
@@ -86,7 +86,7 @@ function renderTableRows(teachersArray) {
     });
 }
 
-// 3. OPEN MODAL FOR ADDING
+// 3. OPEN MODAL BOX FOR ADD ACTION
 function openAddModal() {
     isEditMode = false;
     currentEditId = null;
@@ -96,7 +96,7 @@ function openAddModal() {
     if (teacherModal) teacherModal.style.display = "flex";
 }
 
-// 4. OPEN MODAL FOR EDITING
+// 4. OPEN MODAL BOX FOR EDIT ACTION
 window.openEditModal = function(id, name, subject, email) {
     isEditMode = true;
     currentEditId = id;
@@ -125,7 +125,7 @@ function clearFormFields() {
     if (teacherEmailInput) teacherEmailInput.value = "";
 }
 
-// 5. SAVE OR UPDATE DATA
+// 5. POST SUBMISSION DATA ASSEMBLY
 async function handleSaveData(e) {
     e.preventDefault();
 
@@ -135,7 +135,7 @@ async function handleSaveData(e) {
     const emailValue = teacherEmailInput ? teacherEmailInput.value.trim() : "";
 
     if (!idValue || !nameValue || !subjectValue || !emailValue) {
-        alert("Please completely fill out all fields.");
+        alert("Please completely fill out all input fields.");
         return;
     }
 
@@ -166,17 +166,17 @@ async function handleSaveData(e) {
             closeFormModal();
             loadTeachersList();
         } else {
-            alert(result.error || "A backend error occurred.");
+            alert(result.error || "An integration hurdle occurred.");
         }
     } catch (err) {
-        console.error("Network transaction failed:", err);
-        alert("Could not reach backend API process server.");
+        console.error("Network interface pipeline error:", err);
+        alert("Could not communicate with backend database links.");
     }
 }
 
-// 6. DELETE A TEACHER RECORD
+// 6. DELETE TEACHER FROM DATASTREAM
 window.deleteTeacherRecord = async function(teacherId) {
-    if (!confirm(`Are you absolutely sure you want to remove teacher: ${teacherId}?`)) return;
+    if (!confirm(`Are you absolutely sure you want to remove teacher entry: ${teacherId}?`)) return;
 
     try {
         const response = await fetch(`http://127.0.0.1:8080/teachers/${teacherId}`, {
@@ -186,17 +186,17 @@ window.deleteTeacherRecord = async function(teacherId) {
         const result = await response.json();
 
         if (response.ok) {
-            alert(result.message || "Record successfully removed.");
+            alert(result.message || "Record successfully cleared out.");
             loadTeachersList();
         } else {
-            alert(result.error || "Could not delete record.");
+            alert(result.error || "Could not execute structural record delete query.");
         }
     } catch (err) {
-        console.error("Network failure during deletion:", err);
+        console.error("Deletion communication error:", err);
     }
 };
 
-// 7. FRONTEND FILTER/SEARCH LOGIC
+// 7. CLIENT UI SEARCH TABLE FILTERS
 function filterTableData() {
     if (!searchTeacher || !teacherTable) return;
     const filterText = searchTeacher.value.toLowerCase();
