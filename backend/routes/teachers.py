@@ -8,6 +8,7 @@ teachers_bp = Blueprint("teachers", __name__)
 def get_teachers():
     try:
         connection.ping(reconnect=True)
+        # Select teacher_id and alias it as id for the client app
         cursor.execute("SELECT teacher_id AS id, name, subject, email FROM teachers")
         teachers = cursor.fetchall()
         return jsonify(teachers), 200
@@ -33,7 +34,7 @@ def add_teacher():
         if not id_val or not name_val or not subject_val or not email_val:
             return jsonify({"error": "All fields are required"}), 400
 
-        # Aligns perfectly with your column name: teacher_id
+        # Aligns with your column name: teacher_id
         query = "INSERT INTO teachers (teacher_id, name, subject, email) VALUES (%s, %s, %s, %s)"
         cursor.execute(query, (id_val, name_val, subject_val, email_val))
         connection.commit()
