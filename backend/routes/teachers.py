@@ -33,14 +33,15 @@ def add_teacher():
         if not teacher_id or not name or not subject or not email:
             return jsonify({"error": "All fields are required"}), 400
 
-        query = "INSERT INTO teachers (id, name, subject, email) VALUES (%s, %s, %s, %s)"
-        cursor.execute(query, (teacher_id, name, subject, email))
+        # We add 'teacher123' as a default password fallback so the SQL insert doesn't fail
+        query = "INSERT INTO teachers (id, name, subject, email, password_hash) VALUES (%s, %s, %s, %s, %s)"
+        cursor.execute(query, (teacher_id, name, subject, email, "teacher123"))
         connection.commit()
 
         return jsonify({"message": "Teacher added successfully!"}), 201
     except Exception as e:
-        print("Error adding teacher:", str(e))
-        return jsonify({"error": "Failed to add teacher to database"}), 500
+        print("Database Write Error details:", str(e))
+        return jsonify({"error": f"Database Insertion Failure: {str(e)}"}), 500
 
 # 3. UPDATE AN EXISTING TEACHER
 @teachers_bp.route("/teachers/<string:teacher_id>", methods=["PUT", "OPTIONS"])
