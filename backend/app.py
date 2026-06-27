@@ -1,22 +1,22 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
-import mysql.connector
 
-# Import shared database connection and all route blueprints
-from database.db import connection, cursor
+# Import the unified connection from your db.py file
+from db import connection
+# Import all route blueprints
 from routes.students import students_bp
 from routes.teachers import teachers_bp
-from routes.dashboard import dashboard_bp  # Imported new route tracker
+from routes.dashboard import dashboard_bp
 
 app = Flask(__name__)
 
-# Broad safety configurations for client requests
+# Broad setup allows all methods (GET, POST, PUT, DELETE, OPTIONS) from any local origin
 CORS(app, resources={r"/*": {"origins": "*"}}, supports_credentials=True)
 
 # Registering blueprints
 app.register_blueprint(students_bp)
 app.register_blueprint(teachers_bp)
-app.register_blueprint(dashboard_bp)  # Active blueprint tracker
+app.register_blueprint(dashboard_bp)
 
 @app.route("/")
 def home():
@@ -33,9 +33,12 @@ def login():
     username = data.get('username')
     password = data.get('password')
 
+    # Using the shared connection to run the login verification query
+    cursor = connection.cursor(dictionary=True)
     query = "SELECT * FROM admins WHERE username = %s AND password_hash = %s"
     cursor.execute(query, (username, password))
     admin = cursor.fetchone()
+    cursor.close()
 
     if admin:
         return jsonify({
