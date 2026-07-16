@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Announcements | College Management System</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+
+    <link rel="stylesheet" href="../css/style.css">
+
+    <link rel="stylesheet" href="../css/responsive.css">
+
+</head>
+
+<body>
+
+    <aside class="sidebar">
+
+        <h2>
+
+            <i class="fa-solid fa-graduation-cap"></i>
+
+            CMS
+
+        </h2>
+
+        <ul>
+
+            <li><a href="dashboard.html"><i class="fa-solid fa-house"></i> Dashboard</a></li>
+
+            <li><a href="students.html"><i class="fa-solid fa-user-graduate"></i> Students</a></li>
+
+            <li><a href="teachers.html"><i class="fa-solid fa-chalkboard-user"></i> Teachers</a></li>
+
+            <li><a href="courses.html"><i class="fa-solid fa-book"></i> Courses</a></li>
+
+            <li><a href="attendance.html"><i class="fa-solid fa-calendar-check"></i> Attendance</a></li>
+
+            <li><a href="marks.html"><i class="fa-solid fa-square-poll-vertical"></i> Marks</a></li>
+
+            <li><a href="announcements.html"><i class="fa-solid fa-bullhorn"></i> Announcements</a></li>
+
+            <li><a href="login.html"><i class="fa-solid fa-right-from-bracket"></i> Logout</a></li>
+
+        </ul>
+
+    </aside>
+
+    <main class="main-content">
+
+        <div class="action-bar">
+
+            <div>
+
+                <h1 class="page-title">
+
+                    Announcements
+
+                </h1>
+
+                <p>
+
+                    Manage college announcements.
+
+                </p>
+
+            </div>
+
+            <button class="add-btn" id="addAnnouncementBtn">
+
+                <i class="fa-solid fa-plus"></i>
+
+                New Announcement
+
+            </button>
+
+        </div>
+
+        <div class="search-box">
+
+            <input type="text" id="searchAnnouncement" placeholder="Search Announcement...">
+
+        </div>
+
+        <div class="table-container">
+
+            <table>
+
+                <thead>
+
+                    <tr>
+
+                        <th>Title</th>
+
+                        <th>Message</th>
+
+                        <th>Date</th>
+
+                        <th>Actions</th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody id="announcementTable">
+
+                </tbody>
+
+            </table>
+
+        </div>
+        <!-- ===========================
+        ADD / EDIT ANNOUNCEMENT MODAL
+=========================== -->
+
+        <div class="modal" id="announcementModal">
+
+            <div class="modal-content">
+
+                <span class="close" id="closeAnnouncementModal">
+
+                    &times;
+
+                </span>
+
+                <h2 id="announcementModalTitle">
+
+                    New Announcement
+
+                </h2>
+
+                <form id="announcementForm">
+
+                    <div class="form-group">
+
+                        <label>
+
+                            Title
+
+                        </label>
+
+                        <input type="text" id="announcementTitle" required>
+
+                    </div>
+
+                    <div class="form-group">
+
+                        <label>
+
+                            Message
+
+                        </label>
+
+                        <textarea id="announcementMessage" rows="6" required>
+
+                </textarea>
+
+                    </div>
+
+                    <div class="form-group">
+
+                        <label>
+
+                            Announcement Date
+
+                        </label>
+
+                        <input type="date" id="announcementDate" required>
+
+                    </div>
+
+                    <button type="submit" class="btn btn-primary form-btn" id="saveAnnouncement">
+
+                        Save Announcement
+
+                    </button>
+
+                </form>
+
+            </div>
+
+        </div>
+
+        <!-- ===========================
+        TOAST MESSAGE
+=========================== -->
+
+        <div class="toast" id="toast">
+
+        </div>
+
+    </main>
+
+    <!-- ===========================
+    FOOTER
+=========================== -->
+
+    <footer>
+
+        <p>
+
+            © 2026 College Management System
+
+        </p>
+
+        <p>
+
+            Developed by
+
+            <strong>
+
+                Parth Praveen Bhat
+
+            </strong>
+
+        </p>
+
+    </footer>
+
+    <!-- ===========================
+    JAVASCRIPT
+=========================== -->
+
+    <script src="../js/announcements.js"></script>
+
+</body>
+
+</html>

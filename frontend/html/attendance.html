@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Attendance | College Management System</title>
+
+    <!-- Google Fonts -->
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <!-- Font Awesome -->
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+
+    <!-- CSS -->
+
+    <link rel="stylesheet" href="../css/style.css">
+
+    <link rel="stylesheet" href="../css/responsive.css">
+
+</head>
+
+<body>
+
+    <!-- ===========================
+        SIDEBAR
+=========================== -->
+
+    <aside class="sidebar">
+
+        <h2>
+
+            <i class="fa-solid fa-graduation-cap"></i>
+
+            CMS
+
+        </h2>
+
+        <ul>
+
+            <li>
+
+                <a href="dashboard.html">
+
+                    <i class="fa-solid fa-house"></i>
+
+                    Dashboard
+
+                </a>
+
+            </li>
+
+            <li>
+
+                <a href="students.html">
+
+                    <i class="fa-solid fa-user-graduate"></i>
+
+                    Students
+
+                </a>
+
+            </li>
+
+            <li>
+
+                <a href="teachers.html">
+
+                    <i class="fa-solid fa-chalkboard-user"></i>
+
+                    Teachers
+
+                </a>
+
+            </li>
+
+            <li>
+
+                <a href="courses.html">
+
+                    <i class="fa-solid fa-book"></i>
+
+                    Courses
+
+                </a>
+
+            </li>
+
+            <li>
+
+                <a href="attendance.html">
+
+                    <i class="fa-solid fa-calendar-check"></i>
+
+                    Attendance
+
+                </a>
+
+            </li>
+
+            <li>
+
+                <a href="marks.html">
+
+                    <i class="fa-solid fa-square-poll-vertical"></i>
+
+                    Marks
+
+                </a>
+
+            </li>
+
+            <li>
+
+                <a href="announcements.html">
+
+                    <i class="fa-solid fa-bullhorn"></i>
+
+                    Announcements
+
+                </a>
+
+            </li>
+
+            <li>
+
+                <a href="login.html">
+
+                    <i class="fa-solid fa-right-from-bracket"></i>
+
+                    Logout
+
+                </a>
+
+            </li>
+
+        </ul>
+
+    </aside>
+
+    <!-- ===========================
+        MAIN CONTENT
+=========================== -->
+
+    <main class="main-content">
+
+        <div class="action-bar">
+
+            <div>
+
+                <h1 class="page-title">
+
+                    Attendance
+
+                </h1>
+
+                <p>
+
+                    Manage student attendance records.
+
+                </p>
+
+            </div>
+
+            <button class="add-btn" id="addAttendanceBtn">
+
+                <i class="fa-solid fa-plus"></i>
+
+                Mark Attendance
+
+            </button>
+
+        </div>
+
+        <!-- SEARCH -->
+
+        <div class="search-box">
+
+            <input type="text" id="searchAttendance" placeholder="Search by Student Name...">
+
+        </div>
+
+        <!-- TABLE -->
+
+        <div class="table-container">
+
+            <table>
+
+                <thead>
+
+                    <tr>
+
+                        <th>
+
+                            Student Name
+
+                        </th>
+
+                        <th>
+
+                            Attendance Date
+
+                        </th>
+
+                        <th>
+
+                            Status
+
+                        </th>
+
+                        <th>
+
+                            Actions
+
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody id="attendanceTable">
+
+                </tbody>
+
+            </table>
+
+        </div>
+        <!-- ===========================
+        ADD / EDIT ATTENDANCE MODAL
+=========================== -->
+
+        <div class="modal" id="attendanceModal">
+
+            <div class="modal-content">
+
+                <span class="close" id="closeAttendanceModal">
+
+                    &times;
+
+                </span>
+
+                <h2 id="attendanceModalTitle">
+
+                    Mark Attendance
+
+                </h2>
+
+                <form id="attendanceForm">
+
+                    <div class="form-group">
+
+                        <label>
+
+                            Student Name
+
+                        </label>
+
+                        <input type="text" id="studentName" required>
+
+                    </div>
+
+                    <div class="form-group">
+
+                        <label>
+
+                            Attendance Date
+
+                        </label>
+
+                        <input type="date" id="attendanceDate" required>
+
+                    </div>
+
+                    <div class="form-group">
+
+                        <label>
+
+                            Status
+
+                        </label>
+
+                        <select id="attendanceStatus" required>
+
+                            <option value="">
+
+                                Select Status
+
+                            </option>
+
+                            <option value="Present">
+
+                                Present
+
+                            </option>
+
+                            <option value="Absent">
+
+                                Absent
+
+                            </option>
+
+                        </select>
+
+                    </div>
+
+                    <button type="submit" class="btn btn-primary form-btn" id="saveAttendance">
+
+                        Save Attendance
+
+                    </button>
+
+                </form>
+
+            </div>
+
+        </div>
+
+        <!-- ===========================
+        TOAST MESSAGE
+=========================== -->
+
+        <div class="toast" id="toast">
+
+        </div>
+
+    </main>
+
+    <!-- ===========================
+    FOOTER
+=========================== -->
+
+    <footer>
+
+        <p>
+
+            © 2026 College Management System
+
+        </p>
+
+        <p>
+
+            Developed by
+
+            <strong>
+
+                Parth Praveen Bhat
+
+            </strong>
+
+        </p>
+
+    </footer>
+
+    <!-- ===========================
+    JAVASCRIPT
+=========================== -->
+
+    <script src="../js/attendance.js"></script>
+
+</body>
+
+</html>
